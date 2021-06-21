@@ -1,8 +1,5 @@
 package;
 
-import flixel.group.FlxSpriteGroup;
-import lime.app.Application;
-import openfl.media.Video;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxBasic;
@@ -22,6 +19,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -36,10 +34,12 @@ import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import haxe.Json;
+import lime.app.Application;
 import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import openfl.media.Video;
 
 using StringTools;
 

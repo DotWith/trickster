@@ -1,6 +1,5 @@
 package;
 
-import flixel.system.FlxSound;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,6 +8,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -21,20 +21,14 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [
-		['Improbable-Outset', 'Madness', 'Hellclown']
-	];
+	var weekData:Array<Dynamic> = [['Improbable-Outset', 'Madness', 'Hellclown']];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true];
 
-	var weekCharacters:Array<Dynamic> = [
-		['trickyMask', 'bf', 'gf']
-	];
+	var weekCharacters:Array<Dynamic> = [['trickyMask', 'bf', 'gf']];
 
-	var weekNames:Array<String> = [
-		"Madness"
-	];
+	var weekNames:Array<String> = ["Madness"];
 
 	var txtWeekTitle:FlxText;
 
@@ -52,25 +46,22 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
-
 	var trans:FlxSprite;
 
 	override function create()
 	{
-		trans = new FlxSprite(-300,-760);
-		trans.frames = Paths.getSparrowAtlas('Jaws','clown');
+		trans = new FlxSprite(-300, -760);
+		trans.frames = Paths.getSparrowAtlas('Jaws', 'clown');
 		trans.antialiasing = true;
 
-		trans.animation.addByPrefix("Close","Jaws smol", 24, false);
-		
+		trans.animation.addByPrefix("Close", "Jaws smol", 24, false);
+
 		trace(trans.animation.frames);
 
 		trans.setGraphicSize(Std.int(trans.width * 1.38));
-		
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
-
 
 		if (FlxG.sound.music != null)
 		{
@@ -324,34 +315,31 @@ class StoryMenuState extends MusicBeatState
 			add(trans);
 
 			new FlxTimer().start(0.4, function(tmr:FlxTimer)
+			{
+				if (curWeek == 7 && trans.animation.curAnim == null)
 				{
-					if (curWeek == 7 && trans.animation.curAnim == null)
+					trans.animation.play("Close");
+					var snd = new FlxSound().loadEmbedded(Paths.sound('swipe', 'clown'));
+					snd.play();
+				}
+				if (curWeek == 7)
+				{
+					if (trans.animation.frameIndex == 18)
 					{
-						trans.animation.play("Close");
-						var snd = new FlxSound().loadEmbedded(Paths.sound('swipe','clown'));
+						var snd = new FlxSound().loadEmbedded(Paths.sound('clink', 'clown'));
 						snd.play();
-					}
-					if (curWeek == 7)
-					{
-						if (trans.animation.frameIndex == 18)
-						{
-							var snd = new FlxSound().loadEmbedded(Paths.sound('clink','clown'));
-							snd.play();
-							transOut = null;
-							trans.animation.pause();
-							LoadingState.loadAndSwitchState(new PlayState(), true);
-						}
-						else
-							tmr.reset(0.1);
-					}
-					else
-					{
+						transOut = null;
+						trans.animation.pause();
 						LoadingState.loadAndSwitchState(new PlayState(), true);
 					}
-				});
-
-			
-		
+					else
+						tmr.reset(0.1);
+				}
+				else
+				{
+					LoadingState.loadAndSwitchState(new PlayState(), true);
+				}
+			});
 		}
 	}
 
@@ -448,7 +436,7 @@ class StoryMenuState extends MusicBeatState
 			case 'trickyMask':
 				grpWeekCharacters.members[0].offset.set(195, 180);
 				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1.6));
-				
+
 			default:
 				grpWeekCharacters.members[0].offset.set(100, 100);
 				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1));
