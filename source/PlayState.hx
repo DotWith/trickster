@@ -646,18 +646,18 @@ class PlayState extends MusicBeatState
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
 
-		if (curStage == "nevada" || curStage == "nevadaSpook" || curStage == 'auditorHell')
-			add(tstatic);
-
-		if (curStage == 'auditorHell')
-			tstatic.alpha = 0.1;
-
-		if (curStage == 'nevadaSpook' || curStage == 'auditorHell')
+		switch (curStage.toLowerCase())
 		{
-			tstatic.setGraphicSize(Std.int(tstatic.width * 12));
-			tstatic.x += 600;
+			case 'nevada' | 'nevadaSpook' | 'auditorHell':
+				add(tstatic);
+	
+			case 'auditorHell':
+				tstatic.alpha = 0.1;
+	
+			case 'nevadaSpook' | 'auditorHell':
+				tstatic.setGraphicSize(Std.int(tstatic.width * 12));
+				tstatic.x += 600;
 		}
-
 
 		if (isStoryMode)
 		{
