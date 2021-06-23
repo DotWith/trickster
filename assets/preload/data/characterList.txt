@@ -2,9 +2,9 @@ bf
 dad
 gf
 tricky
-trickyMask
-trickyH
-trickyEx
+tricky-mask
+tricky-hell
+tricky-ex
 bf-hell
 gf-hell
 gf-tied

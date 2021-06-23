@@ -19,7 +19,7 @@ class MenuCharacter extends FlxSprite
 		animation.addByPrefix('bf', "BF idle dance white", 24);
 		animation.addByPrefix('bfConfirm', 'BF HEY!!', 24, false);
 		animation.addByPrefix('gf', "GF Dancing Beat WHITE", 24);
-		animation.addByPrefix('trickyMask', "tricky week", 24);
+		animation.addByPrefix('tricky-mask', "tricky week", 24);
 
 		animation.play(character);
 		updateHitbox();

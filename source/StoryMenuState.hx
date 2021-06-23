@@ -26,7 +26,7 @@ class StoryMenuState extends MusicBeatState
 
 	public static var weekUnlocked:Array<Bool> = [true];
 
-	var weekCharacters:Array<Dynamic> = [['trickyMask', 'bf', 'gf']];
+	var weekCharacters:Array<Dynamic> = [['tricky-mask', 'bf', 'gf']];
 
 	var weekNames:Array<String> = ["Madness"];
 
@@ -150,7 +150,7 @@ class StoryMenuState extends MusicBeatState
 				case 'parents-christmas':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
 					weekCharacterThing.updateHitbox();
-				case 'trickyMask':
+				case 'tricky-mask':
 					trace('AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
 					weekCharacterThing.y -= 150;
 					weekCharacterThing.x -= 60;
@@ -434,7 +434,7 @@ class StoryMenuState extends MusicBeatState
 			case 'dad':
 				grpWeekCharacters.members[0].offset.set(120, 200);
 				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1));
-			case 'trickyMask':
+			case 'tricky-mask':
 				grpWeekCharacters.members[0].offset.set(195, 180);
 				grpWeekCharacters.members[0].setGraphicSize(Std.int(grpWeekCharacters.members[0].width * 1.6));
 

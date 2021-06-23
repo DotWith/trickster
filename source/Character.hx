@@ -139,7 +139,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-			case 'trickyH':
+			case 'tricky-hell':
 				tex = CachedFrames.cachedInstance.fromSparrow('idle', 'hellclwn/Tricky/Idle');
 
 				frames = tex;
@@ -155,10 +155,10 @@ class Character extends FlxSprite
 
 				otherFrames = new Array<Character>();
 
-				otherFrames.push(new Character(100, 100, 'trickyHLeft'));
-				otherFrames.push(new Character(100, 100, 'trickyHRight'));
-				otherFrames.push(new Character(100, 100, 'trickyHUp'));
-				otherFrames.push(new Character(100, 100, 'trickyHDown'));
+				otherFrames.push(new Character(100, 100, 'tricky-hell-left'));
+				otherFrames.push(new Character(100, 100, 'tricky-hell-right'));
+				otherFrames.push(new Character(100, 100, 'tricky-hell-up'));
+				otherFrames.push(new Character(100, 100, 'tricky-hell-down'));
 
 				animations.push(animation);
 				for (i in otherFrames)
@@ -168,7 +168,7 @@ class Character extends FlxSprite
 
 				addOffset("idle", 113, 0);
 				playAnim('idle');
-			case 'trickyHDown':
+			case 'tricky-hell-down':
 				tex = CachedFrames.cachedInstance.fromSparrow('down', 'hellclwn/Tricky/Down');
 
 				frames = tex;
@@ -184,7 +184,7 @@ class Character extends FlxSprite
 				x -= 1400;
 
 				playAnim('idle');
-			case 'trickyHUp':
+			case 'tricky-hell-up':
 				tex = CachedFrames.cachedInstance.fromSparrow('up', 'hellclwn/Tricky/Up');
 
 				frames = tex;
@@ -200,7 +200,7 @@ class Character extends FlxSprite
 				x -= 1400;
 
 				playAnim('idle');
-			case 'trickyHRight':
+			case 'tricky-hell-right':
 				tex = CachedFrames.cachedInstance.fromSparrow('right', 'hellclwn/Tricky/right');
 
 				frames = tex;
@@ -216,7 +216,7 @@ class Character extends FlxSprite
 				x -= 1400;
 
 				playAnim('idle');
-			case 'trickyHLeft':
+			case 'tricky-hell-left':
 				tex = CachedFrames.cachedInstance.fromSparrow('left', 'hellclwn/Tricky/Left');
 
 				frames = tex;
@@ -233,7 +233,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-			case 'trickyMask':
+			case 'tricky-mask':
 				tex = Paths.getSparrowAtlas('TrickyMask', 'clown');
 				frames = tex;
 				animation.addByPrefix('idle', 'Idle', 24);
