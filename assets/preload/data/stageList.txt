@@ -1,4 +1,3 @@
-stage
 nevada
-nevada-spook
+nevada-evil
 auditor-hell

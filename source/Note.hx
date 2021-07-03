@@ -128,7 +128,7 @@ class Note extends FlxSprite
 
 				if (burning)
 				{
-					if (daStage == 'auditorHell')
+					if (daStage == 'auditor-hell')
 					{
 						frames = Paths.getSparrowAtlas('fourth/mech/ALL_deathnotes', "clown");
 						animation.addByPrefix('greenScroll', 'Green Arrow');
@@ -256,7 +256,7 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				if (PlayState.curStage == 'auditorHell') // these though, REALLY hard to hit.
+				if (PlayState.curStage == 'auditor-hell') // these though, REALLY hard to hit.
 				{
 					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
 						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)) // also they're almost impossible to hit late!

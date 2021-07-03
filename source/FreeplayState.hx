@@ -44,8 +44,8 @@ class FreeplayState extends MusicBeatState
 
 		songs.push(new TrickyButton(80, 120, 'menu/freeplay/Improbable Outset Button', 'menu/freeplay/Improbable Outset Confirm', selectSong,
 			'Improbable-Outset', -30));
-		songs.push(new TrickyButton(80, 240, 'menu/freeplay/Madness Button', 'menu/freeplay/Madness Confirm', selectSong, 'Madness', -30));
-		songs.push(new TrickyButton(80, 360, 'menu/freeplay/Hellclown Button', 'menu/freeplay/Hellclown Confirm', selectSong, 'Hellclown', -30));
+		songs.push(new TrickyButton(80, 240, 'menu/freeplay/Madness Button', 'menu/freeplay/Madness Confirm', selectSong, 'madness', -30));
+		songs.push(new TrickyButton(80, 360, 'menu/freeplay/Hellclown Button', 'menu/freeplay/Hellclown Confirm', selectSong, 'hell-clown', -30));
 		songFour = new TrickyButton(300, 420, 'menu/freeplay/Expurgation Button', 'menu/freeplay/Expurgation Confirm', selectSong, 'expurgation', 0, 15);
 
 		songFour.spriteOne = new FlxSprite(songFour.trueX + songFour.tweenX,

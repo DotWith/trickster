@@ -1,10 +1,9 @@
 bf
-dad
+bf-hell
 gf
+gf-hell
+gf-tied
 tricky
 tricky-mask
 tricky-hell
 tricky-ex
-bf-hell
-gf-hell
-gf-tied

@@ -24,7 +24,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.songPosition = 0;
 
 		bf = new Boyfriend(x, y, daBf);
-		if (daStage == 'nevadaSpook')
+		if (daStage == 'nevada-evil')
 		{
 			bf.setGraphicSize(Std.int(bf.width * 0.3));
 			bf.antialiasing = true;

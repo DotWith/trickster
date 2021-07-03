@@ -303,7 +303,7 @@ class PlayState extends MusicBeatState
 				MAINLIGHT.scrollFactor.set(1.2, 1.2);
 			case 'hell-clown':
 				defaultCamZoom = 1;
-				curStage = 'nevadaSpook';
+				curStage = 'nevada-evil';
 
 				tstatic.antialiasing = true;
 				tstatic.scrollFactor.set(0, 0);
@@ -334,7 +334,7 @@ class PlayState extends MusicBeatState
 				add(hank);
 			case 'expurgation':
 				defaultCamZoom = 0.55;
-				curStage = 'auditorHell';
+				curStage = 'auditor-hell';
 
 				tstatic.antialiasing = true;
 				tstatic.scrollFactor.set(0, 0);
@@ -404,9 +404,9 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'nevadaSpook':
+			case 'nevada-evil':
 				gfVersion = 'gf-hell';
-			case 'auditorHell':
+			case 'auditor-hell':
 				gfVersion = 'gf-tied';
 		}
 
@@ -452,7 +452,7 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'nevadaSpook':
+			case 'nevada-evil':
 				bfVersion = 'bf-hell';
 		}
 
@@ -463,14 +463,14 @@ class PlayState extends MusicBeatState
 		{
 			case 'nevada':
 				boyfriend.x += 260;
-			case 'auditorHell':
+			case 'auditor-hell':
 				boyfriend.y -= 160;
 				boyfriend.x += 350;
 		}
 
 		add(gf);
 
-		if (curStage == 'auditorHell')
+		if (curStage == 'auditor-hell')
 			add(hole);
 
 		if (dad.curCharacter == 'tricky-hell')
@@ -478,7 +478,7 @@ class PlayState extends MusicBeatState
 
 		add(dad);
 
-		if (curStage == 'auditorHell')
+		if (curStage == 'auditor-hell')
 		{
 			// Clown init
 			cloneOne = new FlxSprite(0, 0);
@@ -645,13 +645,13 @@ class PlayState extends MusicBeatState
 			case 'nevada':
 				add(tstatic);
 
-			case 'auditorHell':
+			case 'auditor-hell':
 				tstatic.alpha = 0.1;
 				tstatic.setGraphicSize(Std.int(tstatic.width * 12));
 				tstatic.x += 600;
 				add(tstatic);
 
-			case 'nevadaSpook':
+			case 'nevada-evil':
 				tstatic.setGraphicSize(Std.int(tstatic.width * 12));
 				tstatic.x += 600;
 				add(tstatic);
@@ -1945,7 +1945,7 @@ class PlayState extends MusicBeatState
 
 				switch (curStage)
 				{
-					case 'nevadaSpook':
+					case 'nevada-evil':
 						camFollow.x = boyfriend.getMidpoint().x - 35;
 						camFollow.y = boyfriend.getMidpoint().y - 105;
 				}
@@ -2097,7 +2097,7 @@ class PlayState extends MusicBeatState
 						- (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed,
 							2)));
 
-				daNote.y -= (daNote.burning ? ((curStage != 'auditorHell' && FlxG.save.data.downscroll) ? 185 : 65) : 0);
+				daNote.y -= (daNote.burning ? ((curStage != 'auditor-hell' && FlxG.save.data.downscroll) ? 185 : 65) : 0);
 
 				// WIP interpolation shit? Need to fix the pause issue
 				// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
@@ -2114,14 +2114,14 @@ class PlayState extends MusicBeatState
 					{
 						if (!daNote.burning && daNote.mustPress)
 						{
-							if (!daNote.isSustainNote || curStage != 'nevedaSpook')
+							if (!daNote.isSustainNote || curStage != 'nevada-evil')
 							{
 								health -= 0.075;
 								totalDamageTaken += 0.075;
 								interupt = true;
 								noteMiss(daNote.noteData);
 							}
-							else if (daNote.isSustainNote && curStage == 'nevedaSpook') // nerf long notes on hellclown cuz they're too op
+							else if (daNote.isSustainNote && curStage == 'nevada-evil') // nerf long notes on hell-clown cuz they're too op
 							{
 								interupt = true;
 								health -= 0.035;
@@ -2158,7 +2158,7 @@ class PlayState extends MusicBeatState
 		spookyText = new FlxText((x == -1111111111111 ? FlxG.random.float(dad.x + 40, dad.x + 120) : x),
 			(y == -1111111111111 ? FlxG.random.float(dad.y + 200, dad.y + 300) : y));
 		spookyText.setFormat("Impact", 128, FlxColor.RED);
-		if (curStage == 'nevedaSpook')
+		if (curStage == 'nevada-evil')
 		{
 			spookyText.size = 200;
 			spookyText.x += 250;
@@ -2287,7 +2287,7 @@ class PlayState extends MusicBeatState
 
 		var healthDrain:Float = 0;
 
-		if (SONG.song.toLowerCase() == 'hellclown')
+		if (SONG.song.toLowerCase() == 'hell-clown')
 			healthDrain = 0.04;
 
 		switch (daRating)
@@ -2597,7 +2597,7 @@ class PlayState extends MusicBeatState
 						scoreTxt.color = FlxColor.WHITE;
 						if (coolNote.burning)
 						{
-							if (curStage == 'auditorHell')
+							if (curStage == 'auditor-hell')
 							{
 								// lol death
 								health = 0;
@@ -2913,7 +2913,7 @@ class PlayState extends MusicBeatState
 
 		// EX TRICKY HARD CODED EVENTS
 
-		if (curStage == 'auditorHell' && curStep != stepOfLast)
+		if (curStage == 'auditor-hell' && curStep != stepOfLast)
 		{
 			switch (curStep)
 			{
@@ -3022,7 +3022,7 @@ class PlayState extends MusicBeatState
 				spookyRendered = false;
 			}
 			tstatic.alpha = 0;
-			if (curStage == 'auditorHell')
+			if (curStage == 'auditor-hell')
 				tstatic.alpha = 0.1;
 		}
 
@@ -3045,7 +3045,7 @@ class PlayState extends MusicBeatState
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 		}
 
-		if (curStage == 'nevedaSpook')
+		if (curStage == 'nevada-evil')
 			hank.animation.play('dance');
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
@@ -3065,7 +3065,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (curStage == 'auditorHell')
+		if (curStage == 'auditor-hell')
 		{
 			if (curBeat % 8 == 4 && beatOfFuck != curBeat)
 			{
