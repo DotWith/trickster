@@ -46,9 +46,9 @@ class CachedFrames
 			return frames;
 
 		frames = new FlxAtlasFrames(graphic);
-		var Description = Assets.getText(Paths.file('images/$xmlName.xml', 'clown'));
+		var description = Assets.getText(Paths.file('images/$xmlName.xml', 'clown'));
 
-		var data:Access = new Access(Xml.parse(Description).firstElement());
+		var data:Access = new Access(Xml.parse(description).firstElement());
 
 		for (texture in data.nodes.SubTexture)
 		{
