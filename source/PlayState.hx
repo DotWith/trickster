@@ -45,7 +45,7 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
-	public static var curStage:String = '';
+	public static var curStage:String;
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
@@ -234,11 +234,10 @@ class PlayState extends MusicBeatState
 		cutsceneText = CoolUtil.coolTextFile(Paths.txt('cutMyBalls'));
 		// yes i called it "cut my balls" fuck you i can name my txts whatever i want
 
-		switch (SONG.song.toLowerCase())
+		switch (curStage)
 		{
-			case 'improbable-outset':
+			case 'nevada':
 				defaultCamZoom = 0.75;
-				curStage = 'nevada';
 
 				tstatic.antialiasing = true;
 				tstatic.scrollFactor.set(0, 0);
@@ -248,12 +247,12 @@ class PlayState extends MusicBeatState
 
 				tstatic.alpha = 0;
 
-				var bg:FlxSprite = new FlxSprite(-350, -300).loadGraphic(Paths.image('red', 'clown'));
+				var bg:FlxSprite = new FlxSprite(-350, -300).loadGraphic(Paths.image('red'));
 				bg.antialiasing = true;
 				bg.scrollFactor.set(0.9, 0.9);
 				var stageFront:FlxSprite;
 				
-				stageFront = new FlxSprite(-1100, -460).loadGraphic(Paths.image('island_but_rocks_float', 'clown'));
+				stageFront = new FlxSprite(-1100, -460).loadGraphic(Paths.image('island_but_rocks_float'));
 
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.4));
 				stageFront.antialiasing = true;
@@ -261,49 +260,16 @@ class PlayState extends MusicBeatState
 				stageFront.active = false;
 				add(stageFront);
 
-				MAINLIGHT = new FlxSprite(-470, -150).loadGraphic(Paths.image('hue', 'clown'));
+				MAINLIGHT = new FlxSprite(-470, -150).loadGraphic(Paths.image('hue'));
 				MAINLIGHT.alpha - 0.3;
 				MAINLIGHT.setGraphicSize(Std.int(MAINLIGHT.width * 0.9));
 				MAINLIGHT.blend = "screen";
 				MAINLIGHT.updateHitbox();
 				MAINLIGHT.antialiasing = true;
 				MAINLIGHT.scrollFactor.set(1.2, 1.2);
-			case 'madness':
-				defaultCamZoom = 0.75;
-				curStage = 'nevada';
 
-				tstatic.antialiasing = true;
-				tstatic.scrollFactor.set(0, 0);
-				tstatic.setGraphicSize(Std.int(tstatic.width * 8.3));
-				tstatic.animation.add('static', [0, 1, 2], 24, true);
-				tstatic.animation.play('static');
-
-				tstatic.alpha = 0;
-
-				var bg:FlxSprite = new FlxSprite(-350, -300).loadGraphic(Paths.image('red', 'clown'));
-				bg.antialiasing = true;
-				bg.scrollFactor.set(0.9, 0.9);
-				var stageFront:FlxSprite;
-
-				add(bg);
-				stageFront = new FlxSprite(-1100, -460).loadGraphic(Paths.image('island_but_dumb', 'clown'));
-
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.4));
-				stageFront.antialiasing = true;
-				stageFront.scrollFactor.set(0.9, 0.9);
-				stageFront.active = false;
-				add(stageFront);
-
-				MAINLIGHT = new FlxSprite(-470, -150).loadGraphic(Paths.image('hue', 'clown'));
-				MAINLIGHT.alpha - 0.3;
-				MAINLIGHT.setGraphicSize(Std.int(MAINLIGHT.width * 0.9));
-				MAINLIGHT.blend = "screen";
-				MAINLIGHT.updateHitbox();
-				MAINLIGHT.antialiasing = true;
-				MAINLIGHT.scrollFactor.set(1.2, 1.2);
-			case 'hell-clown':
+			case 'nevada-evil':
 				defaultCamZoom = 1;
-				curStage = 'nevada-evil';
 
 				tstatic.antialiasing = true;
 				tstatic.scrollFactor.set(0, 0);
@@ -320,21 +286,20 @@ class PlayState extends MusicBeatState
 				bg.active = false;
 				add(bg);
 
-				var stageFront:FlxSprite = new FlxSprite(-1840, -750).loadGraphic(Paths.image('hellclwn/island_but_red', 'clown'));
+				var stageFront:FlxSprite = new FlxSprite(-1840, -750).loadGraphic(Paths.image('island_but_red'));
 				stageFront.scrollFactor.set(0.9, 0.9);
 				stageFront.active = false;
 				add(stageFront);
 
 				hank = new FlxSprite(-25, -250);
-				hank.frames = Paths.getSparrowAtlas('hellclwn/Hank', 'clown');
+				hank.frames = Paths.getSparrowAtlas('Hank');
 				hank.animation.addByPrefix('dance', 'Hank', 24);
 				hank.animation.play('dance');
 				hank.scrollFactor.set(0.9, 0.9);
-
 				add(hank);
-			case 'expurgation':
+
+			case 'auditor-hell':
 				defaultCamZoom = 0.55;
-				curStage = 'auditor-hell';
 
 				tstatic.antialiasing = true;
 				tstatic.scrollFactor.set(0, 0);
@@ -363,41 +328,16 @@ class PlayState extends MusicBeatState
 				cover.scrollFactor.set(0.9, 0.9);
 				cover.setGraphicSize(Std.int(cover.width * 1.55));
 
-				var energyWall:FlxSprite = new FlxSprite(1350, -690).loadGraphic(Paths.image("fourth/Energywall", "clown"));
+				var energyWall:FlxSprite = new FlxSprite(1350, -690).loadGraphic(Paths.image("Energywall"));
 				energyWall.antialiasing = true;
 				energyWall.scrollFactor.set(0.9, 0.9);
 				add(energyWall);
 
-				var stageFront:FlxSprite = new FlxSprite(-350, -355).loadGraphic(Paths.image('fourth/daBackground', 'clown'));
+				var stageFront:FlxSprite = new FlxSprite(-350, -355).loadGraphic(Paths.image('daBackground'));
 				stageFront.antialiasing = true;
 				stageFront.scrollFactor.set(0.9, 0.9);
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.55));
 				add(stageFront);
-			default:
-				defaultCamZoom = 0.9;
-				curStage = 'stage';
-				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
-				bg.antialiasing = true;
-				bg.scrollFactor.set(0.9, 0.9);
-				bg.active = false;
-				add(bg);
-
-				var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-				stageFront.updateHitbox();
-				stageFront.antialiasing = true;
-				stageFront.scrollFactor.set(0.9, 0.9);
-				stageFront.active = false;
-				add(stageFront);
-
-				var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-				stageCurtains.updateHitbox();
-				stageCurtains.antialiasing = true;
-				stageCurtains.scrollFactor.set(1.3, 1.3);
-				stageCurtains.active = false;
-
-				add(stageCurtains);
 		}
 
 		var gfVersion:String = 'gf';
@@ -2180,8 +2120,10 @@ class PlayState extends MusicBeatState
 
 		if (isStoryMode)
 		{
+			#if PRELOAD_ALL
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
+			#end
 
 			campaignScore += songScore;
 

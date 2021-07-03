@@ -116,6 +116,7 @@ class ChartingState extends MusicBeatState
 		{
 			_song = {
 				song: 'Test',
+				stage: 'stage',
 				notes: [],
 				bpm: 150,
 				needsVoices: true,
@@ -125,6 +126,9 @@ class ChartingState extends MusicBeatState
 				validScore: false
 			};
 		}
+
+		// make stage use the one thats present in PlayState
+		if (_song.stage == null) _song.stage = PlayState.curStage;
 
 		FlxG.mouse.visible = true;
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -231,6 +235,7 @@ class ChartingState extends MusicBeatState
 		{
 			_song.player1 = characters[Std.parseInt(character)];
 		});
+
 		player1DropDown.selectedLabel = _song.player1;
 
 		var player2DropDown = new FlxUIDropDownMenu(140, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
@@ -239,6 +244,15 @@ class ChartingState extends MusicBeatState
 		});
 
 		player2DropDown.selectedLabel = _song.player2;
+
+		var stages:Array<String> = CoolUtil.coolTextFile('assets/data/stageList.txt');
+
+		var stageDropDown = new FlxUIDropDownMenu(10, 130, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
+		{
+			_song.stage = stages[Std.parseInt(stage)];
+		});
+
+		stageDropDown.selectedLabel = _song.stage;
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -252,6 +266,8 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		// layering bullshit
+		tab_group_song.add(stageDropDown);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(player2DropDown);
 
@@ -547,7 +563,7 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
 			vocals.stop();
-			FlxG.switchState(new PlayState());
+			LoadingState.loadAndSwitchState(new PlayState());
 			FlxG.mouse.visible = false;
 		}
 

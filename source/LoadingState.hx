@@ -59,10 +59,7 @@ class LoadingState extends MusicBeatState
 			if (PlayState.SONG.needsVoices)
 				checkLoadSong(getVocalPath());
 			checkLibrary("shared");
-			if (PlayState.storyWeek > 0)
-				checkLibrary("week" + PlayState.storyWeek);
-			else
-				checkLibrary("tutorial");
+			checkLibrary(PlayState.curStage);
 
 			var fadeTime = 0.5;
 			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
@@ -152,11 +149,30 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		// stage fallback so mods won't break
+		if (PlayState.SONG.stage == null)
+		{
+			switch (PlayState.SONG.song.toLowerCase())
+			{
+				case 'improbable-outset' | 'maddness':
+					PlayState.curStage = "nevada";
+				case 'hell-clown':
+					PlayState.curStage = "nevada-evil";
+				case 'expurgation':
+					PlayState.curStage = "auditor-hell";
+				default:
+					PlayState.curStage = "nevada";
+			}
+		}
+		else
+			PlayState.curStage = PlayState.SONG.stage;
+
+		Paths.setCurrentLevel(PlayState.curStage);
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
-			&& isLibraryLoaded("shared");
+			&& isLibraryLoaded("shared")
+			&& isLibraryLoaded(PlayState.curStage);
 
 		if (!loaded)
 			return new LoadingState(target, stopMusic);
