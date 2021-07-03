@@ -630,7 +630,7 @@ class PlayState extends MusicBeatState
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
-		iconP2.cameras = [camHUD];-
+		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -642,15 +642,19 @@ class PlayState extends MusicBeatState
 
 		switch (curStage.toLowerCase())
 		{
-			case 'nevada' | 'nevadaSpook' | 'auditorHell':
+			case 'nevada':
 				add(tstatic);
 
 			case 'auditorHell':
 				tstatic.alpha = 0.1;
-
-			case 'nevadaSpook' | 'auditorHell':
 				tstatic.setGraphicSize(Std.int(tstatic.width * 12));
 				tstatic.x += 600;
+				add(tstatic);
+
+			case 'nevadaSpook':
+				tstatic.setGraphicSize(Std.int(tstatic.width * 12));
+				tstatic.x += 600;
+				add(tstatic);
 		}
 
 		if (isStoryMode)
