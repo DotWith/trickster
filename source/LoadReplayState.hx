@@ -54,7 +54,8 @@ class LoadReplayState extends MusicBeatState
 			var string:String = controlsStrings[i];
 			actualNames[i] = string;
 			var rep:Replay = Replay.LoadReplay(string);
-			controlsStrings[i] = string.split("time")[0] + " " + (rep.replay.songDiff == 2 ? "HARD" : rep.replay.songDiff == 1 ? "EASY" : "NORMAL");
+			var diff = getDiff();
+			controlsStrings[i] = string.split("time")[0] + " " + (diff);
 		}
 
 		if (controlsStrings.length == 0)
@@ -94,6 +95,21 @@ class LoadReplayState extends MusicBeatState
 		changeSelection(0);
 
 		super.create();
+	}
+
+	function getDiff() {
+		switch (rep.replay.songDiff)
+		{
+			case 0:
+				return "NORMAL";
+			case 1:
+				return "EASY";
+			case 2:
+				return "HARD";
+			case 3:
+				return "UNFAIR";
+		}
+		return "HARD";
 	}
 
 	public function getWeekNumbFromSong(songName:String):Int

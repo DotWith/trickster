@@ -311,7 +311,7 @@ class Character extends FlxSprite
 				antialiasing = false;
 				flipX = true;
 
-			case 'exTricky':
+			case 'tricky-ex':
 				frames = Paths.getSparrowAtlas('fourth/EXTRICKY', 'clown');
 				exSpikes = new FlxSprite(x - 350, y - 170);
 				exSpikes.frames = Paths.getSparrowAtlas('fourth/FloorSpikes', 'clown');
@@ -398,7 +398,7 @@ class Character extends FlxSprite
 			case 'gf':
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 					playAnim('danceRight');
-			case 'exTricky':
+			case 'tricky-ex':
 				if (exSpikes.animation.frameIndex >= 3 && animation.curAnim.name == 'singUP')
 				{
 					trace('paused');
@@ -545,7 +545,7 @@ class Character extends FlxSprite
 		{
 			animation.play(AnimName, Force, Reversed, Frame);
 
-			if (curCharacter == 'exTricky')
+			if (curCharacter == 'tricky-ex')
 			{
 				if (AnimName == 'singUP')
 				{

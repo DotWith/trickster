@@ -1,5 +1,8 @@
 package;
 
+#if desktop
+import Discord.DiscordClient;
+#end
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxBasic;
@@ -67,11 +70,11 @@ class PlayState extends MusicBeatState
 	private var vocals:FlxSound;
 
 	// tricky lines
-	public var TrickyLinesSing:Array<String> = [
+	public var trickyLinesSing:Array<String> = [
 		"SUFFER", "INCORRECT", "INCOMPLETE", "INSUFFICIENT", "INVALID", "CORRECTION", "MISTAKE", "REDUCE", "ERROR", "ADJUSTING", "IMPROBABLE", "IMPLAUSIBLE",
 		"MISJUDGED"
 	];
-	public var ExTrickyLinesSing:Array<String> = [
+	public var exTrickyLinesSing:Array<String> = [
 		"YOU AREN'T HANK",
 		"WHERE IS HANK",
 		"HANK???",
@@ -82,7 +85,7 @@ class PlayState extends MusicBeatState
 		"SYSTEM UNRESPONSIVE",
 		"WHY CAN'T I KILL?????"
 	];
-	public var TrickyLinesMiss:Array<String> = [
+	public var trickyLinesMiss:Array<String> = [
 		"TERRIBLE", "WASTE", "MISS CALCULTED", "PREDICTED", "FAILURE", "DISGUSTING", "ABHORRENT", "FORESEEN", "CONTEMPTIBLE", "PROGNOSTICATE", "DISPICABLE",
 		"REPREHENSIBLE"
 	];
@@ -112,6 +115,9 @@ class PlayState extends MusicBeatState
 
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
+	private var player2Strums:FlxTypedGroup<FlxSprite>;
+
+	private var strumming2:Array<Bool> = [false, false, false, false];
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -163,6 +169,15 @@ class PlayState extends MusicBeatState
 
 	var funneEffect:FlxSprite;
 	var inCutscene:Bool = false;
+
+	#if desktop
+	// Discord RPC variables
+	var storyDifficultyText:String = "";
+	var iconRPC:String = "";
+	var songLength:Float = 0;
+	var detailsText:String = "";
+	var detailsPausedText:String = "";
+	#end
 
 	public static var repPresses:Int = 0;
 	public static var repReleases:Int = 0;
@@ -226,13 +241,46 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		// unhardcode tricky sing strings lmao
-		TrickyLinesSing = CoolUtil.coolTextFile(Paths.txt('trickySingStrings'));
-		TrickyLinesMiss = CoolUtil.coolTextFile(Paths.txt('trickyMissStrings'));
-		ExTrickyLinesSing = CoolUtil.coolTextFile(Paths.txt('trickyExSingStrings'));
+		trickyLinesSing = CoolUtil.coolTextFile(Paths.txt('trickySingStrings'));
+		trickyLinesMiss = CoolUtil.coolTextFile(Paths.txt('trickyMissStrings'));
+		exTrickyLinesSing = CoolUtil.coolTextFile(Paths.txt('trickyExSingStrings'));
 
 		// load cutscene text
 		cutsceneText = CoolUtil.coolTextFile(Paths.txt('cutMyBalls'));
 		// yes i called it "cut my balls" fuck you i can name my txts whatever i want
+
+		#if desktop
+		// Making difficulty text for Discord Rich Presence.
+		switch (storyDifficulty)
+		{
+			case 0:
+				storyDifficultyText = "Easy";
+			case 1:
+				storyDifficultyText = "Normal";
+			case 2:
+				storyDifficultyText = "Hard";
+			case 3:
+				storyDifficultyText = "UNFAIR";
+		}
+
+		iconRPC = SONG.player2;
+
+		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
+		if (isStoryMode)
+		{
+			detailsText = "Clown Mode";
+		}
+		else
+		{
+			detailsText = "Freeplay";
+		}
+
+		// String for when the game is paused
+		detailsPausedText = "Paused - " + detailsText;
+
+		// Updating Discord Rich Presence.
+		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+		#end
 
 		switch (curStage)
 		{
@@ -251,7 +299,7 @@ class PlayState extends MusicBeatState
 				bg.antialiasing = true;
 				bg.scrollFactor.set(0.9, 0.9);
 				var stageFront:FlxSprite;
-				
+
 				stageFront = new FlxSprite(-1100, -460).loadGraphic(Paths.image('island_but_rocks_float'));
 
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.4));
@@ -380,7 +428,7 @@ class PlayState extends MusicBeatState
 				dad.y -= 965;
 				gf.x -= 370;
 				gf.y -= 220;
-			case 'exTricky':
+			case 'tricky-ex':
 				dad.x -= 250;
 				dad.y -= 365;
 				gf.x += 345;
@@ -466,6 +514,7 @@ class PlayState extends MusicBeatState
 		add(strumLineNotes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
+		player2Strums = new FlxTypedGroup<FlxSprite>();
 
 		// startCountdown();
 
@@ -1434,6 +1483,14 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 
+		#if desktop
+		// Song duration in a float, useful for the time left feature
+		songLength = FlxG.sound.music.length;
+
+		// Updating Discord Rich Presence (with Time Left)
+		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength);
+		#end
+
 		new FlxTimer().start(0.3, function(tmr:FlxTimer)
 		{
 			if (!paused)
@@ -1524,9 +1581,6 @@ class PlayState extends MusicBeatState
 				{
 					swagNote.x += FlxG.width / 2; // general offset
 				}
-				else
-				{
-				}
 			}
 			daBeats += 1;
 		}
@@ -1559,11 +1613,9 @@ class PlayState extends MusicBeatState
 					babyArrow.animation.add('red', [7]);
 					babyArrow.animation.add('blue', [5]);
 					babyArrow.animation.add('purplel', [4]);
-
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * daPixelZoom));
 					babyArrow.updateHitbox();
 					babyArrow.antialiasing = false;
-
 					switch (Math.abs(i))
 					{
 						case 0:
@@ -1587,17 +1639,14 @@ class PlayState extends MusicBeatState
 							babyArrow.animation.add('pressed', [7, 11], 12, false);
 							babyArrow.animation.add('confirm', [15, 19], 24, false);
 					}
-
 				default:
 					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
 					babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
-
 					babyArrow.antialiasing = true;
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-
 					switch (Math.abs(i))
 					{
 						case 0:
@@ -1638,6 +1687,10 @@ class PlayState extends MusicBeatState
 			if (player == 1)
 			{
 				playerStrums.add(babyArrow);
+			}
+			else
+			{
+				player2Strums.add(babyArrow);
 			}
 
 			babyArrow.animation.play('static');
@@ -1682,9 +1735,51 @@ class PlayState extends MusicBeatState
 			if (!startTimer.finished)
 				startTimer.active = true;
 			paused = false;
+
+			#if desktop
+			if (startTimer.finished)
+			{
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
+			}
+			else
+			{
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			}
+			#end
 		}
 
 		super.closeSubState();
+	}
+
+	override public function onFocus():Void
+	{
+		#if desktop
+		if (health > 0 && !paused)
+		{
+			if (Conductor.songPosition > 0.0)
+			{
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
+			}
+			else
+			{
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			}
+		}
+		#end
+
+		super.onFocus();
+	}
+
+	override public function onFocusLost():Void
+	{
+		#if desktop
+		if (health > 0 && !paused)
+		{
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+		}
+		#end
+
+		super.onFocusLost();
 	}
 
 	function resyncVocals():Void
@@ -1735,14 +1830,6 @@ class PlayState extends MusicBeatState
 		if (nps > maxNPS)
 			maxNPS = nps;
 
-		if (FlxG.keys.justPressed.NINE)
-		{
-			if (iconP1.animation.curAnim.name == 'bf-old')
-				iconP1.animation.play(SONG.player1);
-			else
-				iconP1.animation.play('bf-old');
-		}
-
 		super.update(elapsed);
 
 		scoreTxt.text = Ratings.CalculateRanking(songScore, 0, nps, accuracy);
@@ -1754,11 +1841,19 @@ class PlayState extends MusicBeatState
 			paused = true;
 
 			openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+			#if desktop
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			#end
 		}
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
+
+			#if desktop
+			DiscordClient.changePresence("Chart Editor", null, null, true);
+			#end
 		}
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
@@ -1926,6 +2021,11 @@ class PlayState extends MusicBeatState
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+			#if desktop
+			// Game Over doesn't get his own variable because it's only used here
+			DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			#end
 		}
 
 		if (unspawnNotes[0] != null)
@@ -1998,25 +2098,34 @@ class PlayState extends MusicBeatState
 						case 'tricky-mask': // 1% chance
 							if (FlxG.random.bool(1) && !spookyRendered && !daNote.isSustainNote) // create spooky text :flushed:
 							{
-								createSpookyText(TrickyLinesSing[FlxG.random.int(0, TrickyLinesSing.length)]);
+								createSpookyText(trickyLinesSing[FlxG.random.int(0, trickyLinesSing.length)]);
 							}
 						case 'tricky': // 20% chance
 							if (FlxG.random.bool(20) && !spookyRendered && !daNote.isSustainNote) // create spooky text :flushed:
 							{
-								createSpookyText(TrickyLinesSing[FlxG.random.int(0, TrickyLinesSing.length)]);
+								createSpookyText(trickyLinesSing[FlxG.random.int(0, trickyLinesSing.length)]);
 							}
 						case 'tricky-hell': // 45% chance
 							if (FlxG.random.bool(45) && !spookyRendered && !daNote.isSustainNote) // create spooky text :flushed:
 							{
-								createSpookyText(TrickyLinesSing[FlxG.random.int(0, TrickyLinesSing.length)]);
+								createSpookyText(trickyLinesSing[FlxG.random.int(0, trickyLinesSing.length)]);
 							}
 							FlxG.camera.shake(0.01, 0.2);
-						case 'exTricky': // 60% chance
+						case 'tricky-ex': // 60% chance
 							if (FlxG.random.bool(60) && !spookyRendered && !daNote.isSustainNote) // create spooky text :flushed:
 							{
-								createSpookyText(ExTrickyLinesSing[FlxG.random.int(0, ExTrickyLinesSing.length)]);
+								createSpookyText(exTrickyLinesSing[FlxG.random.int(0, exTrickyLinesSing.length)]);
 							}
 					}
+
+					player2Strums.forEach(function(spr:FlxSprite)
+					{
+						if (Math.abs(daNote.noteData) == spr.ID)
+						{
+							spr.animation.play('confirm');
+							sustain2(spr.ID, spr, daNote);
+						}
+					});
 
 					dad.holdTimer = 0;
 
@@ -2078,6 +2187,23 @@ class PlayState extends MusicBeatState
 					daNote.destroy();
 				}
 			});
+
+			player2Strums.forEach(function(spr:FlxSprite)
+			{
+				if (strumming2[spr.ID])
+				{
+					spr.animation.play("confirm");
+				}
+
+				if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+				{
+					spr.centerOffsets();
+					spr.offset.x -= 13;
+					spr.offset.y -= 13;
+				}
+				else
+					spr.centerOffsets();
+			});
 		}
 
 		if (!inCutscene)
@@ -2106,6 +2232,35 @@ class PlayState extends MusicBeatState
 		spookyText.bold = true;
 		spookyText.text = text;
 		add(spookyText);
+	}
+
+	function sustain2(strum:Int, spr:FlxSprite, note:Note):Void
+	{
+		var length:Float = note.sustainLength;
+
+		if (length > 0)
+		{
+			strumming2[strum] = true;
+		}
+
+		var bps:Float = Conductor.bpm / 60;
+		var spb:Float = 1 / bps;
+
+		if (!note.isSustainNote)
+		{
+			new FlxTimer().start(length == 0 ? 0.2 : (length / Conductor.crochet * spb) + 0.1, function(tmr:FlxTimer)
+			{
+				if (!strumming2[strum])
+				{
+					spr.animation.play("static", true);
+				}
+				else if (length > 0)
+				{
+					strumming2[strum] = false;
+					spr.animation.play("static", true);
+				}
+			});
+		}
 	}
 
 	public function endSong():Void
@@ -2149,9 +2304,10 @@ class PlayState extends MusicBeatState
 
 				if (storyDifficulty == 0)
 					difficulty = '-easy';
-
-				if (storyDifficulty == 2)
+				else if (storyDifficulty == 2)
 					difficulty = '-hard';
+				else if (storyDifficulty == 3)
+					difficulty = '-unfair';
 
 				trace('LOADING NEXT SONG');
 				trace(PlayState.storyPlaylist[0].toLowerCase() + difficulty);
@@ -2649,7 +2805,7 @@ class PlayState extends MusicBeatState
 				&& FlxG.random.bool(dad.curCharacter == "tricky" ? 10 : 4)
 				&& !spookyRendered
 				&& curStage == "nevada") // create spooky text :flushed:
-				createSpookyText(TrickyLinesMiss[FlxG.random.int(0, TrickyLinesMiss.length)]);
+				createSpookyText(trickyLinesMiss[FlxG.random.int(0, trickyLinesMiss.length)]);
 
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
 			// FlxG.log.add('played imss note');

@@ -1,5 +1,9 @@
 package;
 
+#if desktop
+import Discord.DiscordClient;
+import sys.thread.Thread;
+#end
 import Controls.KeyboardScheme;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -45,9 +49,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if polymod
-		// polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
-		#end
+		/*#if polymod
+			polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
+			#end */
 
 		#if sys
 		if (!sys.FileSystem.exists(Sys.getCwd() + "\\assets\\replays"))
@@ -288,6 +292,15 @@ class TitleState extends MusicBeatState
 				canSkip = true;
 				startIntro();
 			});
+
+			#if desktop
+			DiscordClient.initialize();
+
+			Application.current.onExit.add(function(exitCode)
+			{
+				DiscordClient.shutdown();
+			});
+			#end
 		}
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;

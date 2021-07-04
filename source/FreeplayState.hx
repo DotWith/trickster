@@ -1,5 +1,8 @@
 package;
 
+#if desktop
+import Discord.DiscordClient;
+#end
 import AlphabetTricky.TrickyAlphaCharacter;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -33,6 +36,11 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("In the Freeplay Menus", null);
+		#end
+
 		trace(diff);
 
 		#if debug
@@ -115,7 +123,11 @@ class FreeplayState extends MusicBeatState
 	function diffGet()
 	{
 		if (songs[selectedIndex].pognt == 'expurgation')
+		{
 			return "UNFAIR";
+			diff = 3;
+		}
+
 		switch (diff)
 		{
 			case 0:
@@ -124,8 +136,11 @@ class FreeplayState extends MusicBeatState
 				return "MEDIUM";
 			case 2:
 				return "HARD";
+			case 3:
+				return "UNFAIR";
 		}
-		return "what";
+
+		return "HARD";
 	}
 
 	function selectSong()
@@ -140,8 +155,8 @@ class FreeplayState extends MusicBeatState
 
 		if (songs[selectedIndex].pognt == 'expurgation')
 		{
-			PlayState.storyDifficulty = 2;
-			diffToUse = 2;
+			PlayState.storyDifficulty = 3;
+			diffToUse = 3;
 		}
 		else
 			PlayState.storyDifficulty = diff;

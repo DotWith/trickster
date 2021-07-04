@@ -20,8 +20,8 @@ class HealthIcon extends FlxSprite
 				loadGraphic(Paths.image('icons/icon-tricky-mask'), true, 150, 150);
 			case 'trickyH':
 				loadGraphic(Paths.image('icons/icon-tricky-hell'), true, 150, 150);
-			case 'exTricky':
-				loadGraphic(Paths.image('icons/icon-ex-tricky'), true, 150, 150);
+			case 'tricky-ex':
+				loadGraphic(Paths.image('icons/icon-tricky-ex'), true, 150, 150);
 			default:
 				loadGraphic(Paths.image('icons/icon-${char}'), true, 150, 150);
 		}*/

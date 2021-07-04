@@ -1,5 +1,8 @@
 package;
 
+#if desktop
+import Discord.DiscordClient;
+#end
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -100,6 +103,11 @@ class StoryMenuState extends MusicBeatState
 		add(grpLocks);
 
 		trace("Line 70");
+
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("In the Story Mode Menus", null);
+		#end
 
 		for (i in 0...weekData.length)
 		{

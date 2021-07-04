@@ -72,7 +72,7 @@ class LoadingState extends MusicBeatState
 		if (!Assets.cache.hasSound(path))
 		{
 			var library = Assets.getLibrary("songs");
-			final symbolPath = path.split(":").pop();
+			var symbolPath = path.substr(path.lastIndexOf(":") + 1);
 			// @:privateAccess
 			// library.types.set(symbolPath, SOUND);
 			// @:privateAccess
@@ -107,12 +107,9 @@ class LoadingState extends MusicBeatState
 		super.beatHit();
 
 		logo.animation.play('bump');
-		danceLeft = !danceLeft;
 
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
+		gfDance.animation.play(danceLeft ? 'danceLeft' : 'danceRight');
+		danceLeft = !danceLeft;
 	}
 
 	override function update(elapsed:Float)

@@ -7,10 +7,10 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 
 using StringTools;
+
 #if polymod
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
-
 
 class Note extends FlxSprite
 {
@@ -245,33 +245,26 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
-			// The * 0.5 is so that it's easier to hit them too late, instead of too early
+			// The multiplication is so that it's easier to hit them too late, instead of too early
 			if (!burning)
 			{
-				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-					canBeHit = true;
-				else
-					canBeHit = false;
+				// The * 0.5 is so that it's easier to hit them too late, instead of too early
+				canBeHit = (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5));
 			}
 			else
 			{
 				if (PlayState.curStage == 'auditor-hell') // these though, REALLY hard to hit.
 				{
-					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)) // also they're almost impossible to hit late!
-						canBeHit = true;
-					else
-						canBeHit = false;
+					// The * 0.2 is so that it's easier to hit them too late, instead of too early
+					canBeHit = (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.3)
+						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.2)); // also they're almost impossible to hit late!
 				}
 				else
 				{
 					// make burning notes a lot harder to accidently hit because they're weirdchamp!
-					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)) // also they're almost impossible to hit late!
-						canBeHit = true;
-					else
-						canBeHit = false;
+					canBeHit = (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
+						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4)); // also they're almost impossible to hit late!
 				}
 			}
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
