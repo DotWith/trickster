@@ -24,11 +24,9 @@ class Character extends FlxSprite
 
 	public var otherFrames:Array<Character>;
 
-	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDebug:Bool = false)
+	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
-
-		trace('creating ' + character);
 
 		animOffsets = new Map<String, Array<Dynamic>>();
 		curCharacter = character;
@@ -39,7 +37,10 @@ class Character extends FlxSprite
 		switch (curCharacter)
 		{
 			case 'bf':
-				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
+				frames = Paths.getSparrowAtlas('characters/BOYFRIEND', 'shared');
+				
+				trace(frames.frames.length);
+
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
 				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
@@ -295,14 +296,14 @@ class Character extends FlxSprite
 	{
 		for (i in otherFrames)
 		{
-			PlayState.staticVar.add(i);
+			PlayState.instance.add(i);
 			i.visible = false;
 		}
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (!curCharacter.startsWith('bf') && animation.curAnim != null)
+		if (!curCharacter.startsWith('bf'))
 		{
 			if (animation.curAnim.name.startsWith('sing'))
 			{
@@ -315,6 +316,7 @@ class Character extends FlxSprite
 			{
 				if (curCharacter != 'tricky-hell')
 				{
+					trace('dance');
 					dance();
 					holdTimer = 0;
 				}
@@ -364,137 +366,51 @@ class Character extends FlxSprite
 		}
 	}
 
-	// other frames implementation is messy but who cares lol!
-
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	public function playAnim(animName:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
 	{
-		/*if (debugMode && otherFrames != null)
+		animation.play(animName, force, reversed, frame);
+
+		var daOffset = animOffsets.get(animName);
+		if (animOffsets.exists(animName))
 		{
-			if (AnimationDebug.dad != null)
-				{
-					trace('debug play anim ' + AnimName);
-					AnimationDebug.dad.alpha = 0.6;
-					for(i in otherFrames)
-					{
-						i.visible = false;
-					}
-
-					
-					switch(AnimName)
-					{
-						case 'singLEFT':
-							otherFrames[0].visible = true;
-							otherFrames[0].playAnim('idle', Force, Reversed, Frame);
-						case 'singRIGHT':
-							otherFrames[1].visible = true;
-							otherFrames[1].playAnim('idle', Force, Reversed, Frame);
-						case 'singUP':
-							otherFrames[2].visible = true;
-							otherFrames[2].playAnim('idle', Force, Reversed, Frame);
-						case 'singDOWN':
-							otherFrames[3].visible = true;
-							otherFrames[3].playAnim('idle', Force, Reversed, Frame);
-						default:
-							AnimationDebug.dad.alpha = 1;
-							animation.play('idle', Force, Reversed, Frame);
-					}
-			}
-		}*/
-		if (!debugMode && otherFrames != null && PlayState.dad != null && PlayState.generatedMusic)
-		{
-			visible = false;
-			for (i in otherFrames)
-			{
-				i.visible = false;
-				i.x = x;
-				i.y = y + 60;
-			}
-
-			switch (AnimName)
-			{
-				case 'singLEFT':
-					otherFrames[0].visible = true;
-					otherFrames[0].playAnim('idle', Force, Reversed, Frame);
-				case 'singRIGHT':
-					otherFrames[1].visible = true;
-					otherFrames[1].playAnim('idle', Force, Reversed, Frame);
-				case 'singUP':
-					otherFrames[2].visible = true;
-					otherFrames[2].playAnim('idle', Force, Reversed, Frame);
-					otherFrames[2].y += 20;
-				case 'singDOWN':
-					otherFrames[3].visible = true;
-					otherFrames[3].playAnim('idle', Force, Reversed, Frame);
-				default:
-					visible = true;
-
-					animation.play(AnimName, Force, Reversed, Frame);
-
-					var daOffset = animOffsets.get(AnimName);
-					if (animOffsets.exists(AnimName))
-						offset.set(daOffset[0], daOffset[1]);
-					else
-						offset.set(0, 0);
-			}
-		}
-		else if (otherFrames != null && PlayState.dad != null)
-		{
-			visible = true;
-			animation.play('idle', Force, Reversed, Frame);
-
-			var daOffset = animOffsets.get('idle');
-			if (animOffsets.exists('idle'))
-				offset.set(daOffset[0], daOffset[1]);
-			else
-				offset.set(0, 0);
+			offset.set(daOffset[0], daOffset[1]);
 		}
 		else
+			offset.set(0, 0);
+
+		if (curCharacter == 'gf')
 		{
-			animation.play(AnimName, Force, Reversed, Frame);
-
-			if (curCharacter == 'tricky-ex')
+			if (animName == 'singLEFT')
 			{
-				if (AnimName == 'singUP')
-				{
-					trace('spikes');
-					exSpikes.visible = true;
-					if (exSpikes.animation.finished)
-						exSpikes.animation.play('spike');
-				}
-				else if (!exSpikes.animation.finished)
-				{
-					exSpikes.animation.resume();
-					trace('go back spikes');
-					exSpikes.animation.finishCallback = function(pog:String)
-					{
-						trace('finished');
-						exSpikes.visible = false;
-						exSpikes.animation.finishCallback = null;
-					}
-				}
+				danced = true;
 			}
-
-			var daOffset = animOffsets.get(AnimName);
-			if (animOffsets.exists(AnimName))
+			else if (animName == 'singRIGHT')
 			{
-				offset.set(daOffset[0], daOffset[1]);
+				danced = false;
 			}
-			else
-				offset.set(0, 0);
-			if (curCharacter == 'gf')
+			else if (animName == 'singUP' || animName == 'singDOWN')
 			{
-				if (AnimName == 'singLEFT')
+				danced = !danced;
+			}
+		}
+		else if (curCharacter == 'tricky-ex')
+		{
+			if (animName == 'singUP')
+			{
+				trace('spikes');
+				exSpikes.visible = true;
+				if (exSpikes.animation.finished)
+					exSpikes.animation.play('spike');
+			}
+			else if (!exSpikes.animation.finished)
+			{
+				exSpikes.animation.resume();
+				trace('go back spikes');
+				exSpikes.animation.finishCallback = function(pog:String)
 				{
-					danced = true;
-				}
-				else if (AnimName == 'singRIGHT')
-				{
-					danced = false;
-				}
-
-				if (AnimName == 'singUP' || AnimName == 'singDOWN')
-				{
-					danced = !danced;
+					trace('finished');
+					exSpikes.visible = false;
+					exSpikes.animation.finishCallback = null;
 				}
 			}
 		}

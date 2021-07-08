@@ -230,8 +230,6 @@ class PlayState extends MusicBeatState
 
 		FlxCamera.defaultCameras = [camGame];
 
-		staticVar = this;
-
 		persistentUpdate = true;
 		persistentDraw = true;
 
