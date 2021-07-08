@@ -461,8 +461,8 @@ class PlayState extends MusicBeatState
 		if (curStage == 'auditor-hell')
 			add(hole);
 
-		if (dad.curCharacter == 'tricky-hell')
-			dad.addOtherFrames();
+		/*if (dad.curCharacter == 'tricky-hell')
+			dad.addOtherFrames();*/
 
 		add(dad);
 
@@ -2170,7 +2170,7 @@ class PlayState extends MusicBeatState
 								interupt = true;
 								noteMiss(daNote.noteData);
 							}
-							else if (daNote.isSustainNote && curStage == 'nevada-evil') // nerf long notes on hell-clown cuz they're too op
+							else if (daNote.isSustainNote && curStage == 'nevada-evil') // nerf long notes on hellclown cuz they're too op
 							{
 								interupt = true;
 								health -= 0.035;
@@ -2385,7 +2385,7 @@ class PlayState extends MusicBeatState
 
 		var healthDrain:Float = 0;
 
-		if (SONG.song.toLowerCase() == 'hell-clown')
+		if (SONG.song.toLowerCase() == 'hellclown')
 			healthDrain = 0.04;
 
 		switch (daRating)

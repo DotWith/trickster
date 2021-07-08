@@ -1,9 +1,0 @@
-<TextureAtlas imagePath="Left.png">
-
-<SubTexture name="Proper Left0000" x="0" y="0" width="710" height="1001" frameX="0" frameY="-4" frameWidth="738" frameHeight="1004" />
-<SubTexture name="Proper Left0001" x="719" y="0" width="708" height="980" frameX="-13" frameY="0" frameWidth="738" frameHeight="1004" />
-<SubTexture name="Proper Left0002" x="1436" y="0" width="678" height="930" frameX="-53" frameY="-39" frameWidth="738" frameHeight="1004" />
-<SubTexture name="Proper Left0003" x="2123" y="0" width="697" height="941" frameX="-36" frameY="-21" frameWidth="738" frameHeight="1004" />
-<SubTexture name="Proper Left0004" x="0" y="1010" width="665" height="962" frameX="-71" frameY="-9" frameWidth="738" frameHeight="1004" />
-<SubTexture name="Proper Left0005" x="673" y="1010" width="682" height="953" frameX="-56" frameY="-5" frameWidth="738" frameHeight="1004" />
-</TextureAtlas>

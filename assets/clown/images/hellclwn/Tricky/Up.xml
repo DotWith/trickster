@@ -1,9 +1,0 @@
-<TextureAtlas imagePath="Up.png">
-
-<SubTexture name="Proper Up0000" x="0" y="0" width="773" height="909" frameX="-22" frameY="0" frameWidth="794" frameHeight="909" />
-<SubTexture name="Proper Up0001" x="781" y="0" width="788" height="887" frameX="-2" frameY="-13" frameWidth="794" frameHeight="909" />
-<SubTexture name="Proper Up0002" x="1578" y="0" width="759" height="876" frameX="-21" frameY="-19" frameWidth="794" frameHeight="909" />
-<SubTexture name="Proper Up0003" x="0" y="918" width="767" height="845" frameX="-13" frameY="-49" frameWidth="794" frameHeight="909" />
-<SubTexture name="Proper Up0004" x="776" y="918" width="780" height="882" frameX="0" frameY="-13" frameWidth="794" frameHeight="909" />
-<SubTexture name="Proper Up0005" x="1565" y="918" width="771" height="871" frameX="-10" frameY="-24" frameWidth="794" frameHeight="909" />
-</TextureAtlas>

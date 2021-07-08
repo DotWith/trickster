@@ -206,90 +206,18 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 			case 'tricky-hell':
-				frames = CachedFrames.cachedInstance.fromSparrow('idle', 'hellclwn/Tricky/Idle');
-
-				graphic.persist = true;
-				graphic.destroyOnNoUse = false;
-
-				animation.addByPrefix('idle', 'Phase 3 Tricky Idle', 24);
-
-				// they have to be left right up down, in that order.
-				// cuz im too lazy to dynamicly get these names
-				// cry about it
-
-				otherFrames = new Array<Character>();
-
-				otherFrames.push(new Character(100, 100, 'tricky-hell-left'));
-				otherFrames.push(new Character(100, 100, 'tricky-hell-right'));
-				otherFrames.push(new Character(100, 100, 'tricky-hell-up'));
-				otherFrames.push(new Character(100, 100, 'tricky-hell-down'));
-
-				animations.push(animation);
-				for (i in otherFrames)
-					animations.push(animation);
-
-				trace('poggers');
+				frames = Paths.getSparrowAtlas('characters/TrickyHell');
+				animation.addByPrefix('idle', 'Idle', 24);
+				animation.addByPrefix('singUP', 'Sing Up', 24);
+				animation.addByPrefix('singRIGHT', 'Sing Right', 24);
+				animation.addByPrefix('singDOWN', 'Sing Down', 24);
+				animation.addByPrefix('singLEFT', 'Sing Left', 24);
 
 				addOffset("idle", 113, 0);
-				playAnim('idle');
-
-			case 'tricky-hell-down':
-				frames = CachedFrames.cachedInstance.fromSparrow('down', 'hellclwn/Tricky/Down');
-
-				graphic.persist = true;
-				graphic.destroyOnNoUse = false;
-
-				animation.addByPrefix('idle', 'Proper Down', 24);
-
-				addOffset("idle", 166, -157);
-
-				y -= 2000;
-				x -= 1400;
-
-				playAnim('idle');
-
-			case 'tricky-hell-up':
-				frames = CachedFrames.cachedInstance.fromSparrow('up', 'hellclwn/Tricky/Up');
-
-				graphic.persist = true;
-				graphic.destroyOnNoUse = false;
-
-				animation.addByPrefix('idle', 'Proper Up', 24);
-
-				addOffset("idle", 201, -157);
-
-				y -= 2000;
-				x -= 1400;
-
-				playAnim('idle');
-
-			case 'tricky-hell-right':
-				frames = CachedFrames.cachedInstance.fromSparrow('right', 'hellclwn/Tricky/right');
-
-				graphic.persist = true;
-				graphic.destroyOnNoUse = false;
-
-				animation.addByPrefix('idle', 'Proper Right', 24);
-
-				addOffset("idle", 169, -105);
-
-				y -= 2000;
-				x -= 1400;
-
-				playAnim('idle');
-
-			case 'tricky-hell-left':
-				frames = CachedFrames.cachedInstance.fromSparrow('left', 'hellclwn/Tricky/Left');
-
-				graphic.persist = true;
-				graphic.destroyOnNoUse = false;
-
-				animation.addByPrefix('idle', 'Proper Left', 24);
-
-				addOffset("idle", 180, 8);
-
-				y -= 2000;
-				x -= 1400;
+				addOffset("singUP", 201, -157);
+				addOffset("singRIGHT", 169, -105);
+				addOffset("singLEFT", 180, 8);
+				addOffset("singDOWN", 166, -157);
 
 				playAnim('idle');
 
@@ -385,7 +313,7 @@ class Character extends FlxSprite
 
 			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
 			{
-				if (curCharacter != 'trickyHLeft' && curCharacter != 'trickyHRight' && curCharacter != 'trickyHDown' && curCharacter != 'trickyHUp')
+				if (curCharacter != 'tricky-hell')
 				{
 					dance();
 					holdTimer = 0;
@@ -420,28 +348,7 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'gf-hell':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				case 'gf-tied':
+				case 'gf' | 'gf-hell' | 'gf-tied':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;

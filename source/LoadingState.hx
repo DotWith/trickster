@@ -153,7 +153,7 @@ class LoadingState extends MusicBeatState
 			{
 				case 'improbable-outset' | 'maddness':
 					PlayState.curStage = "nevada";
-				case 'hell-clown':
+				case 'hellclown':
 					PlayState.curStage = "nevada-evil";
 				case 'expurgation':
 					PlayState.curStage = "auditor-hell";
