@@ -36,8 +36,10 @@ class Note extends FlxSprite
 	public static var RED_NOTE:Int = 3;
 
 	public var rating:String = "shit";
+	
+	public var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
-	public function new(_strumTime:Float, _noteData:Int, ?_prevNote:Note, ?sustainNote:Bool = false)
+	public function new(_strumTime:Float, _noteData:Int, ?_prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false)
 	{
 		super();
 
@@ -62,9 +64,6 @@ class Note extends FlxSprite
 			burning = true;
 		}
 
-		if (isSustainNote && FlxG.save.data.downscroll)
-			flipY = true;
-
 		noteData = _noteData % 4;
 
 		var daStage:String = PlayState.curStage;
@@ -72,26 +71,15 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
-
-				animation.add('greenScroll', [6]);
-				animation.add('redScroll', [7]);
-				animation.add('blueScroll', [5]);
-				animation.add('purpleScroll', [4]);
-
+				loadGraphic(Paths.image('arrows-pixels'), true, 17, 17);
 				if (isSustainNote)
+					loadGraphic(Paths.image('arrowEnds'), true, 7, 6);
+
+				for (i in 0...4)
 				{
-					loadGraphic(Paths.image('weeb/pixelUI/arrowEnds'), true, 7, 6);
-
-					animation.add('purpleholdend', [4]);
-					animation.add('greenholdend', [6]);
-					animation.add('redholdend', [7]);
-					animation.add('blueholdend', [5]);
-
-					animation.add('purplehold', [0]);
-					animation.add('greenhold', [2]);
-					animation.add('redhold', [3]);
-					animation.add('bluehold', [1]);
+					animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+					animation.add(dataColor[i] + 'hold', [i]); // Holds
+					animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 				}
 
 				if (burning)
@@ -111,20 +99,12 @@ class Note extends FlxSprite
 			default:
 				frames = Paths.getSparrowAtlas('NOTE_assets');
 
-				animation.addByPrefix('greenScroll', 'green0');
-				animation.addByPrefix('redScroll', 'red0');
-				animation.addByPrefix('blueScroll', 'blue0');
-				animation.addByPrefix('purpleScroll', 'purple0');
-
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
-
-				animation.addByPrefix('purplehold', 'purple hold piece');
-				animation.addByPrefix('greenhold', 'green hold piece');
-				animation.addByPrefix('redhold', 'red hold piece');
-				animation.addByPrefix('bluehold', 'blue hold piece');
+				for (i in 0...4)
+				{
+					animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+					animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+					animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+				}
 
 				if (burning)
 				{
@@ -162,29 +142,26 @@ class Note extends FlxSprite
 
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();
-				antialiasing = true;
+				if (FlxG.save.data.antialiasing)
+				{
+					antialiasing = true;
+				}
 		}
 
 		if (burning)
 			setGraphicSize(Std.int(width * 0.86));
 
-		switch (noteData)
-		{
-			case 0:
-				x += swagWidth * 0;
-				animation.play('purpleScroll');
-			case 1:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 2:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 3:
-				x += swagWidth * 3;
-				animation.play('redScroll');
-		}
+		x += swagWidth * noteData;
+		animation.play(dataColor[noteData] + 'Scroll');
 
 		// trace(prevNote);
+
+		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
+		// and flip it so it doesn't look weird.
+		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
+		// then what is this lol
+		if (FlxG.save.data.downscroll && sustainNote) 
+			flipY = true;
 
 		if (isSustainNote && prevNote != null)
 		{
@@ -193,17 +170,7 @@ class Note extends FlxSprite
 
 			x += width / 2;
 
-			switch (noteData)
-			{
-				case 2:
-					animation.play('greenholdend');
-				case 3:
-					animation.play('redholdend');
-				case 1:
-					animation.play('blueholdend');
-				case 0:
-					animation.play('purpleholdend');
-			}
+			animation.play(dataColor[noteData] + 'holdend');
 
 			updateHitbox();
 
@@ -214,17 +181,7 @@ class Note extends FlxSprite
 
 			if (prevNote.isSustainNote)
 			{
-				switch (prevNote.noteData)
-				{
-					case 0:
-						prevNote.animation.play('purplehold');
-					case 1:
-						prevNote.animation.play('bluehold');
-					case 2:
-						prevNote.animation.play('greenhold');
-					case 3:
-						prevNote.animation.play('redhold');
-				}
+				prevNote.animation.play(dataColor[prevNote.noteData] + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed;
 				prevNote.updateHitbox();

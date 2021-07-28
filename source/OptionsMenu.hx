@@ -19,24 +19,34 @@ class OptionsMenu extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var options:Array<OptionCatagory> = [
-		new OptionCatagory("Gameplay", [
+	var options:Array<OptionCategory> = [
+		new OptionCategory("Gameplay", [
 			new DFJKOption(controls),
-			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
-			#if desktop new FPSCapOption("Cap your FPS (Left for -10, Right for +10. SHIFT to go faster)"),
+			new DownscrollOption("Toggle making the notes scroll down rather than up."),
+			new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
+			#if desktop
+			new FPSCapOption("Change your FPS Cap."),
 			#end
-			new ScrollSpeedOption("Change your scroll speed (Left for -0.1, right for +0.1. If it's at 1, it will be chart dependent)"),
+			new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 		]),
-		new OptionCatagory("Appearance", [
-			#if desktop
-			new AccuracyOption("Display accuracy information."), new NPSDisplayOption("Shows your current Notes Per Second."),
-			new SongPositionOption("Show the songs current position (as a bar)"), new DownscrollOption("Change the layout of the strumline.")
-			#else
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.")
-			#end
+		new OptionCategory("Appearance", [
+			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
+			new AccuracyOption("Display accuracy information on the info bar."),
+			new SongPositionOption("Show the song's current position as a scrolling bar."),
+			new NPSDisplayOption("Shows your current Notes Per Second on the info bar.")
 		]),
-		new OptionCatagory("Misc", [new FPSOption("Toggle the FPS Counter")])
+		new OptionCategory("Misc", [
+			#if desktop
+			new FPSOption("Toggle the FPS Counter"),
+			#end
+			new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty.")
+		]),
+
+		new OptionCategory("Saves and Data", [
+			//new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
+			//new ResetSettings("Reset ALL your settings. This is irreversible!")
+		])
 	];
 
 	private var currentDescription:String = "";
@@ -48,7 +58,7 @@ class OptionsMenu extends MusicBeatState
 
 	var targetY:Array<Float> = [];
 
-	var currentSelectedCat:OptionCatagory;
+	var currentSelectedCat:OptionCategory;
 
 	var menuShade:FlxSprite;
 
@@ -70,9 +80,7 @@ class OptionsMenu extends MusicBeatState
 
 		for (i in 0...options.length)
 		{
-			var option:OptionCatagory = options[i];
-
-			var text:FlxText = new FlxText(125, (95 * i) + 100, 0, option.getName(), 34);
+			var text:FlxText = new FlxText(125, (95 * i) + 100, 0, options[i].getName(), 34);
 			text.color = FlxColor.fromRGB(255, 0, 0);
 			text.setFormat("tahoma-bold.ttf", 60, FlxColor.RED);
 			add(text);
@@ -88,7 +96,7 @@ class OptionsMenu extends MusicBeatState
 
 		currentOptions[0].color = FlxColor.WHITE;
 
-		offsetPog = new FlxText(125, 600, 0, "Offset: " + FlxG.save.data.offset);
+		offsetPog = new FlxText(125, 600, 0, "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription, 3);
 		offsetPog.setFormat("tahoma-bold.ttf", 42, FlxColor.RED);
 		add(offsetPog);
 
@@ -133,10 +141,7 @@ class OptionsMenu extends MusicBeatState
 			currentOptions = [];
 			for (i in 0...options.length)
 			{
-				// redo shit
-				var option:OptionCatagory = options[i];
-
-				var text:FlxText = new FlxText(125, (95 * i) + 100, 0, option.getName(), 34);
+				var text:FlxText = new FlxText(125, (95 * i) + 100, 0, options[i].getName(), 34);
 				text.color = FlxColor.fromRGB(255, 0, 0);
 				text.setFormat("tahoma-bold.ttf", 60, FlxColor.RED);
 				add(text);
@@ -144,8 +149,11 @@ class OptionsMenu extends MusicBeatState
 			}
 			remove(menuShade);
 			add(menuShade);
+
 			curSelected = 0;
 			currentOptions[curSelected].color = FlxColor.WHITE;
+
+			changeSelection(curSelected);
 		}
 		if (FlxG.keys.justPressed.UP)
 			changeSelection(-1);
@@ -187,18 +195,17 @@ class OptionsMenu extends MusicBeatState
 			{
 				if (FlxG.keys.pressed.SHIFT)
 				{
-					if (FlxG.keys.pressed.RIGHT)
-						FlxG.save.data.offset++;
-					if (FlxG.keys.pressed.LEFT)
-						FlxG.save.data.offset--;
-				}
-				else
-				{
 					if (FlxG.keys.justPressed.RIGHT)
-						FlxG.save.data.offset++;
+						FlxG.save.data.offset += 0.1;
 					if (FlxG.keys.justPressed.LEFT)
-						FlxG.save.data.offset--;
+						FlxG.save.data.offset -= 0.1;
 				}
+				else if (FlxG.keys.pressed.RIGHT)
+					FlxG.save.data.offset += 0.1;
+				else if (FlxG.keys.pressed.LEFT)
+					FlxG.save.data.offset -= 0.1;
+
+				offsetPog.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
 			}
 		}
 		else
@@ -206,20 +213,17 @@ class OptionsMenu extends MusicBeatState
 			if (FlxG.keys.pressed.SHIFT)
 			{
 				if (FlxG.keys.pressed.RIGHT)
-					FlxG.save.data.offset++;
-				if (FlxG.keys.pressed.LEFT)
-					FlxG.save.data.offset--;
+					FlxG.save.data.offset += 0.1;
+				else if (FlxG.keys.pressed.LEFT)
+					FlxG.save.data.offset -= 0.1;
 			}
-			else
-			{
-				if (FlxG.keys.justPressed.RIGHT)
-					FlxG.save.data.offset++;
-				if (FlxG.keys.justPressed.LEFT)
-					FlxG.save.data.offset--;
-			}
-		}
+			else if (FlxG.keys.justPressed.RIGHT)
+				FlxG.save.data.offset += 0.1;
+			else if (FlxG.keys.justPressed.LEFT)
+				FlxG.save.data.offset -= 0.1;
 
-		offsetPog.text = "Offset: " + FlxG.save.data.offset + " (Left/Right)";
+			offsetPog.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+		}
 
 		if (controls.RESET)
 			FlxG.save.data.offset = 0;

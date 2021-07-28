@@ -1,9 +1,13 @@
 package;
 
+#if windows
+import Discord.DiscordClient;
+#end
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.util.FlxColor;
+import lime.app.Application;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.FPS;
@@ -25,6 +29,8 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		// Quick checks
+
 		Lib.current.addChild(new Main());
 	}
 
@@ -66,13 +72,21 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if !debug
-		initialState = TitleState;
+		#if cpp
+		initialState = Caching;
 		#end
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 
 		addChild(game);
+		#if windows
+		DiscordClient.initialize();
+
+		Application.current.onExit.add(function(exitCode)
+		{
+			DiscordClient.shutdown();
+		});
+		#end
 
 		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
 

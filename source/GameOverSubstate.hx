@@ -12,22 +12,18 @@ class GameOverSubstate extends MusicBeatSubstate
 	var bf:Boyfriend;
 	var camFollow:FlxObject;
 
-	var stageSuffix:String = "";
-
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.curStage;
-		var daBf:String = 'signDeath';
-
 		super();
 
 		Conductor.songPosition = 0;
 
-		bf = new Boyfriend(x, y, daBf);
-		if (daStage == 'nevada-evil')
+		bf = new Boyfriend(x, y);
+
+		if (PlayState.curStage == 'nevada-evil')
 		{
 			bf.setGraphicSize(Std.int(bf.width * 0.3));
-			bf.antialiasing = true;
+			bf.antialiasing = false;
 		}
 		add(bf);
 
@@ -43,13 +39,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		FlxG.camera.follow(camFollow, LOCKON, 0.01);
-
 		bf.playAnim('firstDeath');
-		bf.animation.resume();
 	}
 
-	var playedMic:Bool = false;
+	var startVibin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -63,19 +56,24 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (controls.BACK)
 		{
 			FlxG.sound.music.stop();
+
 			MainMenuState.reRoll = true;
 			FlxG.switchState(new MainMenuState());
 			PlayState.loadRep = false;
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
+		if (bf.animation.curAnim.name == 'firstDeath')
 		{
-			FlxG.sound.playMusic(Paths.music('gameOver', 'clown'));
-			bf.playAnim('deathLoop', true);
-		}
-		else if (bf.animation.curAnim.finished && bf.animation.curAnim.name != 'deathConfirm')
-		{
-			bf.playAnim('deathLoop', true);
+			if (bf.animation.curAnim.curFrame == 12)
+			{
+				FlxG.camera.follow(camFollow, LOCKON, 0.01);
+			}
+			
+			if (bf.animation.curAnim.finished)
+			{
+				FlxG.sound.playMusic(Paths.music('gameOver', 'clown'));
+				startVibin = true;
+			}
 		}
 
 		if (FlxG.sound.music.playing)
@@ -88,6 +86,10 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.beatHit();
 
+		if (startVibin && !isEnding)
+		{
+			bf.playAnim('deathLoop', true);
+		}
 		FlxG.log.add('beat');
 	}
 
@@ -97,6 +99,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		if (!isEnding)
 		{
+			// PlayState.startTime = 0;
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();

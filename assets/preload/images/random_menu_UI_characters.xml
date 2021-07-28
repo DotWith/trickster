@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="random_menu_UI_characters.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Auditor0000" x="1855" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0001" x="2360" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0002" x="2865" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0003" x="3370" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0004" x="3875" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0005" x="4380" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0006" x="4885" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0007" x="5390" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0008" x="5895" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0009" x="6400" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0010" x="6905" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0011" x="7410" y="0" width="505" height="698"/>
+	<SubTexture name="Auditor0012" x="0" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0013" x="505" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0014" x="1010" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0015" x="1515" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0016" x="2020" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0017" x="2525" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0018" x="3030" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0019" x="3535" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0020" x="4040" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0021" x="4545" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0022" x="5050" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0023" x="5555" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0024" x="6060" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0025" x="6565" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0026" x="7070" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0027" x="7575" y="698" width="505" height="698"/>
+	<SubTexture name="Auditor0028" x="0" y="1396" width="505" height="698"/>
+	<SubTexture name="Auditor0029" x="505" y="1396" width="505" height="698"/>
+	<SubTexture name="BF idle menu0000" x="0" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0001" x="0" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0002" x="371" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0003" x="371" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0004" x="742" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0005" x="742" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0006" x="1113" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0007" x="1113" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0008" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0009" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0010" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0011" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0012" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="BF idle menu0013" x="1484" y="0" width="371" height="412"/>
+	<SubTexture name="Tricky Idle menu0000" x="1010" y="1396" width="627" height="644"/>
+	<SubTexture name="Tricky Idle menu0001" x="1637" y="1396" width="627" height="644"/>
+	<SubTexture name="Tricky Idle menu0002" x="2264" y="1396" width="627" height="644"/>
+	<SubTexture name="Tricky Idle menu0003" x="2891" y="1396" width="627" height="644"/>
+	<SubTexture name="Tricky Idle menu0004" x="3518" y="1396" width="627" height="644"/>
+</TextureAtlas>

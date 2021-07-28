@@ -5,7 +5,7 @@ class Ratings
 	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
-		if (FlxG.save.data.botplay)
+		if (FlxG.save.data.botplay && !PlayState.loadRep)
 			ranking = "BotPlay";
 
 		if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous (SICK) Full Combo
@@ -22,22 +22,22 @@ class Ratings
 		// WIFE TIME :)))) (based on Wife3)
 
 		var wifeConditions:Array<Bool> = [
-			accuracy >= 99.9935, // AAAAA
-			accuracy >= 99.980, // AAAA:
-			accuracy >= 99.970, // AAAA.
-			accuracy >= 99.955, // AAAA
-			accuracy >= 99.90, // AAA:
-			accuracy >= 99.80, // AAA.
-			accuracy >= 99.70, // AAA
-			accuracy >= 99, // AA:
-			accuracy >= 96.50, // AA.
-			accuracy >= 93, // AA
-			accuracy >= 90, // A:
-			accuracy >= 85, // A.
-			accuracy >= 80, // A
-			accuracy >= 70, // B
-			accuracy >= 60, // C
-			accuracy < 60 // D
+			accuracy >= 99.9935, 	// AAAAA
+			accuracy >= 99.980, 	// AAAA:
+			accuracy >= 99.970, 	// AAAA.
+			accuracy >= 99.955, 	// AAAA
+			accuracy >= 99.90, 		// AAA:
+			accuracy >= 99.80, 		// AAA.
+			accuracy >= 99.70, 		// AAA
+			accuracy >= 99, 		// AA:
+			accuracy >= 96.50, 		// AA.
+			accuracy >= 93, 		// AA
+			accuracy >= 90, 		// A:
+			accuracy >= 85, 		// A.
+			accuracy >= 80, 		// A
+			accuracy >= 70, 		// B
+			accuracy >= 60, 		// C
+			accuracy < 60 			// D
 		];
 
 		for (i in 0...wifeConditions.length)
@@ -86,13 +86,14 @@ class Ratings
 
 		if (accuracy == 0)
 			ranking = "N/A";
-		else if (FlxG.save.data.botplay)
+		else if (FlxG.save.data.botplay && !PlayState.loadRep)
 			ranking = "BotPlay";
 
 		return ranking;
 	}
 
-	public static function CalculateRating(noteDiff:Float, ?customSafeZone:Float):String // Generate a judgement through some timing shit
+	// Generate a judgement through some timing shit
+	public static function CalculateRating(noteDiff:Float, ?customSafeZone:Float):String
 	{
 		var customTimeScale = Conductor.timeScale;
 
@@ -106,23 +107,32 @@ class Ratings
 
 		// trace('Hit Info\nDifference: ' + noteDiff + '\nZone: ' + Conductor.safeZoneOffset * 1.5 + "\nTS: " + customTimeScale + "\nLate: " + 155 * customTimeScale);
 
-		if (noteDiff > 166 * customTimeScale) // so god damn early its a miss
-			return "miss";
-		if (noteDiff > 135 * customTimeScale) // way early
-			return "shit";
-		else if (noteDiff > 90 * customTimeScale) // early
-			return "bad";
-		else if (noteDiff > 45 * customTimeScale) // your kinda there
-			return "good";
-		else if (noteDiff < -45 * customTimeScale) // little late
-			return "good";
-		else if (noteDiff < -90 * customTimeScale) // late
-			return "bad";
-		else if (noteDiff < -135 * customTimeScale) // late as fuck
-			return "shit";
-		else if (noteDiff < -166 * customTimeScale) // so god damn late its a miss
-			return "miss";
-		return "sick";
+		if (FlxG.save.data.botplay && !PlayState.loadRep)
+			return "sick"; // FUNNY
+	
+		var rating = checkRating(noteDiff,customTimeScale);
+
+		return rating;
+	}
+
+	public static function checkRating(ms:Float, ts:Float)
+	{
+		var rating = "miss";
+		if (ms <= 166 * ts && ms >= 135 * ts)
+			rating = "shit";
+		else if (ms < 135 * ts && ms >= 90 * ts)
+			rating = "bad";
+		else if (ms < 90 * ts && ms >= 45 * ts)
+			rating = "good";
+		else if (ms < 45 * ts && ms >= -45 * ts)
+			rating = "sick";
+		else if (ms > -90 * ts && ms <= -45 * ts)
+            rating = "good";
+        else if (ms > -135 * ts && ms <= -90 * ts)
+            rating = "bad";
+        else if (ms > -166 * ts && ms <= -135 * ts)
+            rating = "shit";
+		return rating;
 	}
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, accuracy:Float):String

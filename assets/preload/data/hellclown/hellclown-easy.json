@@ -10234,6 +10234,7 @@
             }
         ],
         "player2": "tricky-hell",
+        "gfVersion": "gf-hell",
         "song": "Hellclown",
         "stage": "nevada-evil",
         "validScore": true,

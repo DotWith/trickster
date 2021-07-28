@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="DJ_Tricky.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="mixtape0000" x="0" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0001" x="1170" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0002" x="2340" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0003" x="3510" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0004" x="4680" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0005" x="5850" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0006" x="7020" y="0" width="1170" height="785"/>
+	<SubTexture name="mixtape0007" x="0" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0008" x="1170" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0009" x="2340" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0010" x="3510" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0011" x="4680" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0012" x="5850" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0013" x="7020" y="785" width="1170" height="785"/>
+	<SubTexture name="mixtape0014" x="0" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0015" x="1170" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0016" x="2340" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0017" x="3510" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0018" x="4680" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0019" x="5850" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0020" x="7020" y="1570" width="1170" height="785"/>
+	<SubTexture name="mixtape0021" x="0" y="2355" width="1170" height="785"/>
+</TextureAtlas>

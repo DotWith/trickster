@@ -8,7 +8,7 @@ import lime.system.DisplayMode;
 import openfl.Lib;
 import openfl.display.FPS;
 
-class OptionCatagory
+class OptionCategory
 {
 	private var _options:Array<Option> = new Array<Option>();
 
@@ -213,6 +213,27 @@ class DistractionsAndEffectsOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Distractions " + (!FlxG.save.data.distractions ? "off" : "on");
+	}
+}
+
+class AntialiasingOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.save.data.antialiasing = !FlxG.save.data.antialiasing;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Antialiasing " + (!FlxG.save.data.antialiasing ? "off" : "on");
 	}
 }
 

@@ -3786,6 +3786,7 @@
             }
         ],
         "player2": "tricky-mask",
+        "gfVersion": "gf",
         "song": "Improbable-Outset",
         "stage": "nevada",
         "validScore": true,

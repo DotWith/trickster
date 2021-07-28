@@ -24,7 +24,7 @@ class MainMenuState extends MusicBeatState
 
 	var show:String = "";
 	var hand:FlxSprite;
-	var shower:FlxSprite;
+	var shower:MenuCharacter;
 
 	public static var curDifficulty:Int = 2;
 	public static var trans:FlxSprite;
@@ -74,7 +74,10 @@ class MainMenuState extends MusicBeatState
 
 		trans = new FlxSprite(-300, -760);
 		trans.frames = Paths.getSparrowAtlas('Jaws', 'clown');
-		trans.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			trans.antialiasing = true;
+		}
 
 		trans.animation.addByPrefix("Close", "Jaws smol", 24, false);
 
@@ -128,11 +131,12 @@ class MainMenuState extends MusicBeatState
 		else
 			show = lastRoll;
 
-		shower = new FlxSprite(200, 280);
+		shower = new MenuCharacter(200, 280, 1.0, true);
 
 		Conductor.changeBPM(165);
 
-		switch (show)
+		shower.setCharacter(show);
+		/*switch (show)
 		{
 			case 'bf':
 				shower.frames = Paths.getSparrowAtlas("menu/MenuBF/MenuBF", "clown");
@@ -169,7 +173,10 @@ class MainMenuState extends MusicBeatState
 
 				hand = new FlxSprite(shower.x + 75, shower.y + 50).loadGraphic(Paths.image('menu/Sus/AmongHand', 'clown'));
 				hand.setGraphicSize(Std.int(hand.width * 0.67));
-				hand.antialiasing = true;
+				if (FlxG.save.data.antialiasing)
+				{
+					hand.antialiasing = true;
+				}
 				hand.alpha = 0;
 
 				lines.push('A DESPICABLE THING LURKS HERE');
@@ -240,9 +247,12 @@ class MainMenuState extends MusicBeatState
 				shower.x -= 275;
 
 				lines.push('WEAKER THEN THE OTHERS...');
-		}
+		}*/
 
-		shower.antialiasing = true;
+		/*if (FlxG.save.data.antialiasing)
+		{
+			shower.antialiasing = true;
+		}*/
 
 		if (reRoll)
 		{
@@ -255,8 +265,6 @@ class MainMenuState extends MusicBeatState
 			shower.offset.set(5, 10);
 			shower.animation.play('deathPost');
 		}
-		else
-			shower.animation.play('idle');
 
 		for (i in listOfButtons)
 		{
@@ -272,17 +280,26 @@ class MainMenuState extends MusicBeatState
 
 		var bgCover:FlxSprite = new FlxSprite(-455, -327).loadGraphic(Paths.image('menu/BGCover', 'clown'));
 		bgCover.setGraphicSize(Std.int(bgCover.width * 0.7));
-		bgCover.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			bgCover.antialiasing = true;
+		}
 		add(bgCover);
 
 		var hedgeCover:FlxSprite = new FlxSprite(-750, -414).loadGraphic(Paths.image('menu/Hedgecover', 'clown'));
 		hedgeCover.setGraphicSize(Std.int(hedgeCover.width * 0.65));
-		hedgeCover.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			hedgeCover.antialiasing = true;
+		}
 		add(hedgeCover);
 
 		var liners:FlxSprite = new FlxSprite(600, 390).loadGraphic(Paths.image("menu/Liners", "clown"));
 		liners.setGraphicSize(Std.int(liners.width * 0.7));
-		liners.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			liners.antialiasing = true;
+		}
 		add(liners);
 
 		for (i in listOfDiffButtons)
@@ -297,11 +314,17 @@ class MainMenuState extends MusicBeatState
 
 		var redLines:FlxSprite = new FlxSprite(-749, 98).loadGraphic(Paths.image("menu/MenuRedLines", "clown"));
 		redLines.setGraphicSize(Std.int(redLines.width * 0.7));
-		redLines.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			redLines.antialiasing = true;
+		}
 		add(redLines);
 
 		var logo:FlxSprite = new FlxSprite(-50, -15).loadGraphic(Paths.image("menu/Mainlogo", "clown"));
-		logo.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			logo.antialiasing = true;
+		}
 		add(logo);
 
 		if (FlxG.save.data.beaten)
@@ -326,13 +349,19 @@ class MainMenuState extends MusicBeatState
 
 					tinyMan.setGraphicSize(Std.int(tinyMan.width * 0.66));
 
-					tinyMan.antialiasing = true;
+					if (FlxG.save.data.antialiasing)
+					{
+						tinyMan.antialiasing = true;
+					}
 
 					add(tinyMan);
 				}
 			}
 
-			troph.antialiasing = true;
+			if (FlxG.save.data.antialiasing)
+			{
+				troph.antialiasing = true;
+			}
 			troph.setGraphicSize(Std.int(troph.width * 0.8));
 
 			add(troph);
@@ -343,11 +372,17 @@ class MainMenuState extends MusicBeatState
 
 		var menuShade:FlxSprite = new FlxSprite(-1350, -1190).loadGraphic(Paths.image("menu/Menu Shade", "clown"));
 		menuShade.setGraphicSize(Std.int(menuShade.width * 0.7));
-		menuShade.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			menuShade.antialiasing = true;
+		}
 		add(menuShade);
 
 		var credits:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("menu/CreditsOverlay", "clown"));
-		credits.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			credits.antialiasing = true;
+		}
 		add(credits);
 
 		add(trans);
@@ -413,7 +448,7 @@ class MainMenuState extends MusicBeatState
 	public static function playStory()
 	{
 		FlxG.mouse.visible = false;
-		PlayState.storyPlaylist = ['Improbable Outset', 'Madness', 'Hell Clown'];
+		PlayState.storyPlaylist = ['Improbable Outset', 'Madness', 'Hellclown'];
 		PlayState.isStoryMode = true;
 
 		var diffic = "";
@@ -429,7 +464,6 @@ class MainMenuState extends MusicBeatState
 		PlayState.storyDifficulty = curDifficulty;
 
 		PlayState.SONG = Song.loadFromJson('improbable-outset' + diffic, 'improbable-outset');
-		PlayState.storyWeek = 7;
 		PlayState.campaignScore = 0;
 
 		FlxG.sound.music.fadeOut();

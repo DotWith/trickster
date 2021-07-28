@@ -1,3 +1,6 @@
+package;
+
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
@@ -31,8 +34,11 @@ class TrickyTextButton extends FlxSprite
 		spriteOne.setFormat("tahoma-bold.ttf", size, FlxColor.RED);
 		spriteTwo.setFormat("tahoma-bold.ttf", size, FlxColor.WHITE);
 
-		spriteOne.antialiasing = true;
-		spriteTwo.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			spriteOne.antialiasing = true;
+			spriteTwo.antialiasing = true;
+		}
 
 		spriteTwo.alpha = 0;
 	}

@@ -28,8 +28,6 @@ class FreeplayState extends MusicBeatState
 	public static var diff = 0;
 	public static var diffAndScore:FlxText;
 
-	var debug:Bool = false;
-
 	var songFour:TrickyButton;
 
 	public static var diffText:AlphabetTricky;
@@ -43,8 +41,10 @@ class FreeplayState extends MusicBeatState
 
 		trace(diff);
 
+		var isDebug:Bool = false;
+
 		#if debug
-		debug = true;
+		isDebug = true;
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
@@ -81,7 +81,7 @@ class FreeplayState extends MusicBeatState
 		bars.setGraphicSize(Std.int(bars.width * 0.65));
 		add(bars);
 
-		if (FlxG.save.data.beatenHard || debug)
+		if (FlxG.save.data.beatenHard || isDebug)
 			songs.push(songFour);
 		else
 		{
@@ -122,25 +122,9 @@ class FreeplayState extends MusicBeatState
 
 	function diffGet()
 	{
-		if (songs[selectedIndex].pognt == 'expurgation')
-		{
-			return "UNFAIR";
-			diff = 3;
-		}
+		var diffThing = songs[selectedIndex].pognt == 'expurgation' ? 3 : diff;
 
-		switch (diff)
-		{
-			case 0:
-				return "EASY";
-			case 1:
-				return "MEDIUM";
-			case 2:
-				return "HARD";
-			case 3:
-				return "UNFAIR";
-		}
-
-		return "HARD";
+		return CoolUtil.difficultyFromInt(diffThing).toUpperCase();
 	}
 
 	function selectSong()
@@ -165,7 +149,6 @@ class FreeplayState extends MusicBeatState
 
 		PlayState.SONG = Song.loadFromJson(poop, songs[selectedIndex].pognt.toLowerCase());
 		PlayState.isStoryMode = false;
-		PlayState.storyWeek = 7;
 
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
@@ -193,8 +176,8 @@ class FreeplayState extends MusicBeatState
 		}
 
 		var score = Highscore.getScore(songs[selectedIndex].pognt, diff);
-		if (songs[selectedIndex].pognt == 'expurgation')
-			score = Highscore.getScore(songs[selectedIndex].pognt, 2);
+		/*if (songs[selectedIndex].pognt == 'expurgation')
+			score = Highscore.getScore(songs[selectedIndex].pognt, 2);*/
 		diffAndScore.text = diffGet() + " - " + score;
 
 		if (FlxG.keys.justPressed.ESCAPE && !selectedSmth)
@@ -268,5 +251,17 @@ class FreeplayState extends MusicBeatState
 			selectedSmth = true;
 			songs[selectedIndex].select();
 		}
+	}
+}
+
+class SongMetadata
+{
+	public var songName:String = "";
+	public var songCharacter:String = "";
+
+	public function new(song:String, songCharacter:String)
+	{
+		this.songName = song;
+		this.songCharacter = songCharacter;
 	}
 }

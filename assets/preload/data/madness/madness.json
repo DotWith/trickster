@@ -5611,6 +5611,7 @@
             }
         ],
         "player2": "tricky",
+        "gfVersion": "gf",
         "song": "Madness",
         "stage": "nevada",
         "validScore": true,

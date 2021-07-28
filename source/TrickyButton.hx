@@ -1,3 +1,6 @@
+package;
+
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
@@ -41,8 +44,11 @@ class TrickyButton extends FlxSprite
 		spriteOne = new FlxSprite(trueX + tweenX, trueY + tweenY).loadGraphic(Paths.image(pngOne, "clown"));
 		spriteTwo = new FlxSprite(trueX + tweenX, trueY + tweenY).loadGraphic(Paths.image(pngTwo, "clown"));
 
-		spriteOne.antialiasing = true;
-		spriteTwo.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			spriteOne.antialiasing = true;
+			spriteTwo.antialiasing = true;
+		}
 
 		spriteTwo.alpha = 0;
 	}

@@ -54,8 +54,7 @@ class LoadReplayState extends MusicBeatState
 			var string:String = controlsStrings[i];
 			actualNames[i] = string;
 			var rep:Replay = Replay.LoadReplay(string);
-			var diff = getDiff();
-			controlsStrings[i] = string.split("time")[0] + " " + (diff);
+			controlsStrings[i] = string.split("time")[0] + " " + CoolUtil.difficultyFromInt(rep.replay.songDiff).toUpperCase();
 		}
 
 		if (controlsStrings.length == 0)
@@ -65,7 +64,10 @@ class LoadReplayState extends MusicBeatState
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
-		menuBG.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			menuBG.antialiasing = true;
+		}
 		add(menuBG);
 
 		grpControls = new FlxTypedGroup<Alphabet>();
@@ -97,28 +99,13 @@ class LoadReplayState extends MusicBeatState
 		super.create();
 	}
 
-	function getDiff() {
-		switch (rep.replay.songDiff)
-		{
-			case 0:
-				return "NORMAL";
-			case 1:
-				return "EASY";
-			case 2:
-				return "HARD";
-			case 3:
-				return "UNFAIR";
-		}
-		return "HARD";
-	}
-
 	public function getWeekNumbFromSong(songName:String):Int
 	{
 		var week:Int = 0;
 		for (i in 0...songs.length)
 		{
 			var pog:FreeplayState.SongMetadata = songs[i];
-			if (pog.songName.toLowerCase() == songName)
+			if (pog.songName == songName)
 				week = pog.week;
 		}
 		return week;
@@ -167,7 +154,6 @@ class LoadReplayState extends MusicBeatState
 			PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
-			PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
@@ -196,7 +182,7 @@ class LoadReplayState extends MusicBeatState
 			+ "\nSong: "
 			+ rep.replay.songName
 			+ "\nReplay Version: "
-			+ (rep.replay.replayGameVer != Replay.version ? "OUTDATED" : "Latest");
+			+ rep.replay.replayGameVer + ' (' + (Replay.version ? "OUTDATED not useable!" : "Latest") + ')\n';
 
 		// selector.y = (70 * curSelected) + 30;
 

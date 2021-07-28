@@ -1,7 +1,9 @@
 package;
 
-#if desktop
+#if windows
 import Discord.DiscordClient;
+#end
+#if cpp
 import sys.thread.Thread;
 #end
 import Controls.KeyboardScheme;
@@ -69,6 +71,16 @@ class TitleState extends MusicBeatState
 
 		PlayerSettings.init();
 
+		#if !cpp
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+
+		PlayerSettings.init();
+
+		KadeEngineData.initSave();
+		#end
+
+		Highscore.load();
+
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		// DEBUG BULLSHIT
@@ -93,7 +105,10 @@ class TitleState extends MusicBeatState
 
 		logoBl = new FlxSprite(-200, -160);
 		logoBl.frames = Paths.getSparrowAtlas('TrickyLogo', 'clown');
-		logoBl.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			logoBl.antialiasing = true;
+		}
 		logoBl.animation.addByPrefix('bump', 'Logo', 34);
 		logoBl.animation.play('bump');
 		logoBl.setGraphicSize(Std.int(logoBl.width * 0.5));
@@ -102,23 +117,32 @@ class TitleState extends MusicBeatState
 		// logoBl.color = FlxColor.BLACK;
 
 		gfDance = new FlxSprite(FlxG.width * 0.23, FlxG.height * 0.07);
-		gfDance.frames = Paths.getSparrowAtlas('DJ_Tricky', 'clown');
+		gfDance.frames = Paths.getSparrowAtlas('DJ_Tricky');
 		gfDance.animation.addByPrefix('dance', 'mixtape', 24, true);
-		gfDance.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			gfDance.antialiasing = true;
+		}
 		gfDance.setGraphicSize(Std.int(gfDance.width * 0.6));
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		titleText.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			titleText.antialiasing = true;
+		}
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.screenCenter();
-		logo.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			logo.antialiasing = true;
+		}
 		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
@@ -143,7 +167,10 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.y -= 100;
-		ngSpr.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			ngSpr.antialiasing = true;
+		}
 
 		actualNG = new FlxSprite(0, FlxG.height * 0.55).loadGraphic(Paths.image('newgrounds_logo', 'clown'));
 		actualNG.visible = false;
@@ -151,7 +178,10 @@ class TitleState extends MusicBeatState
 		actualNG.updateHitbox();
 		actualNG.screenCenter(X);
 		actualNG.y -= 70;
-		actualNG.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			actualNG.antialiasing = true;
+		}
 
 		backupMen = new FlxSprite(0, FlxG.height * 0.55).loadGraphic(Paths.image('TheBackupMen', 'clown'));
 		backupMen.visible = false;
@@ -159,25 +189,14 @@ class TitleState extends MusicBeatState
 		backupMen.updateHitbox();
 		backupMen.screenCenter(X);
 		backupMen.y -= 100;
-		backupMen.antialiasing = true;
+		if (FlxG.save.data.antialiasing)
+		{
+			backupMen.antialiasing = true;
+		}
 
 		CachedFrames.loadEverything();
 
 		Highscore.load();
-
-		if (FlxG.save.data.weekUnlocked != null)
-		{
-			// FIX LATER!!!
-			// WEEK UNLOCK PROGRESSION!!
-			// StoryMenuState.weekUnlocked = FlxG.save.data.weekUnlocked;
-
-			if (StoryMenuState.weekUnlocked.length < 4)
-				StoryMenuState.weekUnlocked.insert(0, true);
-
-			// QUICK PATCH OOPS!
-			if (!StoryMenuState.weekUnlocked[0])
-				StoryMenuState.weekUnlocked[0] = true;
-		}
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
@@ -227,9 +246,12 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite(-10, -10).loadGraphic(Paths.image('fourth/bg', 'clown'));
-		// bg.antialiasing = true;
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
+		/*if (FlxG.save.data.antialiasing)
+		{
+			bg.antialiasing = true;
+		}
+		bg.setGraphicSize(Std.int(bg.width * 0.6));
+		bg.updateHitbox();*/
 
 		add(bg);
 		add(gfDance);
@@ -256,7 +278,7 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var fullText:String = Assets.getText(Paths.txt('introText'));
+		var fullText:String = Assets.getText(Paths.txt('data/introText'));
 
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];
